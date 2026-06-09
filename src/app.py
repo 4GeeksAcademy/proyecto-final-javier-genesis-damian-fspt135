@@ -6,12 +6,13 @@ import os
 from flask import Flask, jsonify, send_from_directory
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
-
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from api.extension import bcrypt
+
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 
@@ -24,8 +25,12 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 # JWT
-app.config["JWT_SECRET_KEY"] = "mindfed-secret-key"
+#app.config["JWT_SECRET_KEY"] = "mindfed-secret-key"
+app.config["JWT_SECRET_KEY"] = os.getenv("FLASK_JWT")
+# db.init_app(app)
 jwt = JWTManager(app)
+bcrypt.init_app(app)
+
 
 # Database
 db_url = os.getenv("DATABASE_URL")
