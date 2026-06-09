@@ -5,6 +5,8 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
+from flask_jwt_extended import create_access_token
+from werkzeug.security import check_password_hash
 
 api = Blueprint('api', __name__)
 
@@ -12,11 +14,50 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
+@api.route('/login', methods=['POST'])
+def login():
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
+    body = request.get_json()
 
-    return jsonify(response_body), 200
+    if not body:
+     return jsonify({
+        "success": False,
+        "msg": "Datos inválidos"
+    }), 400
+
+    email = body.get("email")
+    password = body.get("password")
+
+    if not email or not password:
+        return jsonify({
+            "success": False,
+            "msg": "Email y contraseña son obligatorios"
+        }), 400
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return jsonify({
+            "success": False,
+            "msg": "Credenciales incorrectas"
+        }), 401
+
+    if not check_password_hash(user.password, password):
+        return jsonify({
+            "success": False,
+            "msg": "Credenciales incorrectas"
+        }), 401
+
+    token = create_access_token(
+        identity=str(user.id)
+    )
+
+    return jsonify({
+        "success": True,
+        "token": token,
+        "user": {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email
+        }
+    }), 200
