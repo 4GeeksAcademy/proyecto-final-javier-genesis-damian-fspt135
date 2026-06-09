@@ -7,7 +7,7 @@ import {
     FaLightbulb
 } from "react-icons/fa";
 
-import "../../css/Landing.css";
+import "../../css/Landing.css"
 
 export const Landing = () => {
 
