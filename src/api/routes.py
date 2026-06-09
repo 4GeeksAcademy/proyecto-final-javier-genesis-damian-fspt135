@@ -6,7 +6,6 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
-from werkzeug.security import check_password_hash
 from api.extension import bcrypt
 
 api = Blueprint('api', __name__)
@@ -43,11 +42,11 @@ def login():
             "msg": "Credenciales incorrectas"
         }), 401
 
-    if not check_password_hash(user.password, password):
+    if not bcrypt.check_password_hash(user.password, password):
         return jsonify({
-            "success": False,
-            "msg": "Credenciales incorrectas"
-        }), 401
+        "success": False,
+        "msg": "Credenciales incorrectas"
+    }), 401
 
     token = create_access_token(
         identity=str(user.id)
