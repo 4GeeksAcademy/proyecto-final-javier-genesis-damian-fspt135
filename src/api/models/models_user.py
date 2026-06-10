@@ -1,8 +1,11 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean
-from sqlalchemy.orm import Mapped, mapped_column
+from api.database.db import db
+from sqlalchemy import String, Boolean, ForeignKey, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import List
 
-db = SQLAlchemy()
+
+
+
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -15,7 +18,9 @@ class User(db.Model):
     date_birth: Mapped[str] = mapped_column(String(255),nullable=True)
     description: Mapped[str] = mapped_column(String(255),nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean(), default=True)
-
+    foro = relationship('Foro')
+    post = relationship('Post')
+    tag = relationship('Tag')
 
     def serialize(self):
         return {
