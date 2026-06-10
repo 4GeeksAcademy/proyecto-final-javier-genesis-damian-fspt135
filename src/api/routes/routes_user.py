@@ -92,3 +92,33 @@ def register_user():
     return jsonify({"msg": "User created", 'user': new_user.serialize()}), 201
 
 
+@api.route('/profile/eddit/<int:id>', methods=['PUT'])
+@jwt_required()
+def profile_edit(id):
+
+    user_token = get_jwt_identity()
+    user_id = int(user_token)
+
+    if user_id != id:
+        return jsonify({"msg": "You do not have permission to update this profile"}), 403
+
+    data = request.get_json()
+    user_update = db.session.get(User, id)
+
+    if user_update is None:
+        return jsonify({"msg": "User not found"}), 404
+    
+    user_update.username = data.get('username', user_update.username)
+    user_update.email = data.get('email', user_update.email)
+    user_update.img = data.get('img', user_update.img)
+    user_update.first_name = data.get('first_name', user_update.first_name)
+    user_update.last_name = data.get('last_name', user_update.last_name)
+    user_update.date_birth = data.get('date_birth', user_update.date_birth)
+    user_update.description = data.get('description', user_update.description)
+
+    if 'password' in data and data['password'] is not None:
+        hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+        user_update.password = hashed_password
+    
+    db.session.commit()
+    return jsonify({"msg": "User updated", "user": user_update.serialize_all()}), 200
