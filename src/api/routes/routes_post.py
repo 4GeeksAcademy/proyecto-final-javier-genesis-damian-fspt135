@@ -11,7 +11,14 @@ from api.database.db import db
 def create_post():
     content = request.form.get('content')
     foro_id = request.form.get('foro_id')
+    title = request.form.get('title')
     
+    if not title:
+        return jsonify({
+            "msg": "Title is required"
+        }), 400
+
+
     if not content:
         return jsonify({"msg": "Content is required"}), 400
 
@@ -30,6 +37,7 @@ def create_post():
 
     new_post = Post(
         content = content,
+        title = title,
         img = img_url,
         foro_id = int(foro_id) if foro_id else None,
         user_id = get_jwt_identity()

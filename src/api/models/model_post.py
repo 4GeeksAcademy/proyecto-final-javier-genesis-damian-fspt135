@@ -9,6 +9,7 @@ from datetime import datetime
 
 class Post (db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(String(120), nullable=False)
     content: Mapped[str] = mapped_column(String(255),nullable=False)
     img: Mapped[str] = mapped_column(String(255),nullable=True)
     user_id = mapped_column(ForeignKey("user.id"), nullable=False)
@@ -21,6 +22,7 @@ class Post (db.Model):
     def serialize_post(self):
         return {
         "id": self.id,
+        "title": self.title,
         "content": self.content,
         "img": self.img,
         "user_id": self.user_id,

@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
 import { Landing } from "./pages/Landing";
+import { CreacionPost } from "./pages/CreacionPost";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { RegisterForm } from "./pages/RegisterForm"
@@ -28,7 +29,7 @@ export const router = createBrowserRouter(
       <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
         <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
-        <Route path="/demo" element={<Demo />} />
+        <Route path="/creacionpost" element={<CreacionPost />} /> 
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/data-profile" element={<DataProfile />} />
         <Route path="/create-foro" element={<CreateForo />} />

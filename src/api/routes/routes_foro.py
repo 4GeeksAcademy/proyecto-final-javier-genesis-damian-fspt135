@@ -5,6 +5,10 @@ from api.models.models_foro import Foro
 from api.database.db import db
 
 
+
+
+
+
 @api.route('/foro', methods=["POST"])
 @jwt_required()
 def create_forum():
