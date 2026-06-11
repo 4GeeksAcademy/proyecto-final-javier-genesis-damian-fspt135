@@ -4,6 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 
 import os
 from flask import Flask, jsonify, send_from_directory
+from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from api.utils import APIException, generate_sitemap
@@ -25,6 +26,8 @@ static_file_dir = os.path.join(
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+CORS(app)
 
 # JWT
 #app.config["JWT_SECRET_KEY"] = "mindfed-secret-key"
