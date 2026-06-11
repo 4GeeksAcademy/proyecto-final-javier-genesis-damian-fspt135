@@ -17,6 +17,10 @@ export const useRegister = () => {
         try {
             const data = await registerUser(email, password, username);
             
+            if (data && data.user && data.user.id) {
+                localStorage.setItem("userId", data.user.id);
+            }
+            
             if (data && data.token) {
                 localStorage.setItem("token", data.token);
             }

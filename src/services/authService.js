@@ -45,7 +45,8 @@ export const registerUser = async (email, password, username) => {
       body: JSON.stringify({ email, password, username }),
     });
 
-    const data = await response.json();
+    const textData = await response.text();
+    const data = textData ? JSON.parse(textData) : {};
 
     if (!response.ok) {
       const errorMessage = data.message || `Registration failed (Status: ${response.status})`;

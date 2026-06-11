@@ -1,78 +1,109 @@
-import React from "react"
-import { useNavigate } from 'react-router-dom';
-
+import React from "react";
+import { useProfile } from "../hooks/useProfile";
 
 export const DataProfile = () => {
+    const {
+        firstName, setFirstName,
+        lastName, setLastName,
+        birthDate, setBirthDate,
+        profileImg, setProfileImg,
+        description, setDescription,
+        error,
+        loading,
+        success,
+        handleUpdateProfile
+    } = useProfile();
+
     return (
         <div className="container my-5">
             <div className="row justify-content-center">
                 <div className="col-md-8 col-lg-6">
                     <div className="card shadow-sm p-4">
-                        <h2 className="text-center mb-4">Complete Your Profile</h2>
-                        <form>
+                        <h2 className="text-center mb-4">Completa tu Perfil</h2>
+                        
+                        {error && <div className="alert alert-danger">{error}</div>}
+                        {success && <div className="alert alert-success">¡Perfil actualizado con éxito!</div>}
+
+                        <form onSubmit={handleUpdateProfile}>
                             <hr className="my-4" />
                             <div className="row">
                                 <div className="col-md-6 mb-3">
-                                    <label htmlFor="firstName" className="form-label fw-bold">First Name</label>
+                                    <label htmlFor="firstName" className="form-label fw-bold">Nombre</label>
                                     <input
                                         type="text"
                                         className="form-control"
                                         id="firstName"
                                         name="firstName"
-                                        placeholder="John"
+                                        placeholder="Javier"
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
                                     />
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label htmlFor="lastName" className="form-label fw-bold">Last Name</label>
+                                    <label htmlFor="lastName" className="form-label fw-bold">Apellido</label>
                                     <input
                                         type="text"
                                         className="form-control"
                                         id="lastName"
                                         name="lastName"
-                                        placeholder="Doe"
+                                        placeholder="Brenner"
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)}
                                     />
                                 </div>
                             </div>
 
                             <div className="mb-3">
-                                <label htmlFor="birthDate" className="form-label fw-bold">Date of Birth</label>
+                                <label htmlFor="birthDate" className="form-label fw-bold">Fecha de Nacimiento</label>
                                 <input
                                     type="date"
                                     className="form-control"
                                     id="birthDate"
                                     name="birthDate"
+                                    value={birthDate}
+                                    onChange={(e) => setBirthDate(e.target.value)}
                                 />
                             </div>
 
                             <div className="mb-3">
-                                <label htmlFor="profileImg" className="form-label fw-bold">Profile Image URL</label>
+                                <label htmlFor="profileImg" className="form-label fw-bold">URL de la Imagen de Perfil</label>
                                 <input
                                     type="url"
                                     className="form-control"
                                     id="profileImg"
                                     name="profileImg"
                                     placeholder="https://example.com/avatar.jpg"
+                                    value={profileImg}
+                                    onChange={(e) => setProfileImg(e.target.value)}
                                 />
                             </div>
 
                             <div className="mb-4">
-                                <label htmlFor="description" className="form-label fw-bold">Description</label>
+                                <label htmlFor="description" className="form-label fw-bold">Descripción</label>
                                 <textarea
                                     className="form-control"
                                     id="description"
                                     name="description"
                                     rows="4"
-                                    placeholder="Tell us about yourself..."
+                                    placeholder="Cuéntanos sobre ti..."
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
                                 ></textarea>
                             </div>
 
                             <div className="d-grid">
-                                <button type="submit" className="btn btn-primary btn-lg">Save Profile</button>
+                                <button 
+                                    type="submit" 
+                                    className="btn btn-primary btn-lg"
+                                    disabled={loading}
+                                >
+                                    {loading ? "Guardando..." : "Guardar Perfil"}
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
