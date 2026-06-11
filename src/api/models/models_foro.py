@@ -8,7 +8,7 @@ from datetime import datetime
 
 class Foro(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    title: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
+    title: Mapped[str] = mapped_column(String(120), nullable=False)
     img: Mapped[str] = mapped_column(String(255), nullable=True)
     description: Mapped[str] = mapped_column(String(255), nullable=True)
     user_id = mapped_column(ForeignKey("user.id"), nullable=False)
@@ -18,3 +18,14 @@ class Foro(db.Model):
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
 
 
+    def serialize_foro(self):
+        return {
+        "id": self.id,
+        "title": self.title,
+        "img": self.img,
+        "description": self.description,
+        "user_id": self.user_id,
+        "created_at": str(self.created_at),
+        "updated_at": str(self. updated_at)
+        
+    }
