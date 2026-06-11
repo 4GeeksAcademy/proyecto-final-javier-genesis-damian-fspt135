@@ -10,6 +10,7 @@ from api.utils import APIException, generate_sitemap
 from api.models.models_user import db
 from api.routes.routes_user import api
 from api.routes import routes_foro
+from api.routes.routes_post import *
 from api.admin import setup_admin
 from api.commands import setup_commands
 from api.extension import bcrypt

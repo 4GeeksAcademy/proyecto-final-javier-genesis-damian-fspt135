@@ -16,3 +16,16 @@ class Post (db.Model):
     foro = relationship("Foro", back_populates="post")
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+
+
+    def serialize_post(self):
+        return {
+        "id": self.id,
+        "content": self.content,
+        "img": self.img,
+        "user_id": self.user_id,
+        "foro_id": self.foro_id,
+        "created_at": self.created_at.isoformat() if self.created_at else None,
+        "updated_at": self.updated_at.isoformat() if self.updated_at else None
+        
+    }
