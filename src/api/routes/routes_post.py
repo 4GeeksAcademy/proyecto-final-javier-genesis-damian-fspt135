@@ -1,8 +1,8 @@
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from api.routes.routes_user import api
 from api.models.model_post import Post
 from api.database.db import db
+from api.routes import api
 # import cloudinary
 # import cloudinary.uploader
 

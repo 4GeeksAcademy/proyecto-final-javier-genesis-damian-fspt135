@@ -18,7 +18,7 @@ class User(db.Model):
     is_active: Mapped[bool] = mapped_column(Boolean(), default=True)
     foro = relationship('Foro')
     post = relationship('Post')
-    tag = relationship('Tag')
+    tag = relationship('Tag_select')
 
     def serialize(self):
         return {
