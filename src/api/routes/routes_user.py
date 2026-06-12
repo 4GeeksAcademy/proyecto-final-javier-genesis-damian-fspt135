@@ -122,3 +122,20 @@ def profile_edit(id):
     
     db.session.commit()
     return jsonify({"msg": "User updated", "user": user_update.serialize_all()}), 200
+
+@api.route("/profile/<int:id>", methods=["GET"])
+@jwt_required()
+def get_user_id(id):
+
+    user_token = get_jwt_identity()
+    user_id = int(user_token)
+
+    if user_id != id:
+        return jsonify({"msg": "You do not have permission to view this profile"}), 403
+    
+    user = db.session.get(User, id)
+    
+    if user is None:
+        return jsonify({"msg": "User not found" }), 400
+    
+    return jsonify(user.serialize_all()), 200
