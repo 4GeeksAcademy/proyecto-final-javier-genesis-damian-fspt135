@@ -1,13 +1,8 @@
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from api.routes.routes_user import api
 from api.models.models_foro import Foro
 from api.database.db import db
-
-
-
-
-
+from api.routes import api
 
 @api.route('/foro', methods=["POST"])
 @jwt_required()

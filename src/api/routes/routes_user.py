@@ -7,11 +7,8 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from api.extension import bcrypt
+from api.routes import api
 
-api = Blueprint('api', __name__)
-
-# Allow CORS requests to this API
-CORS(api)
 
 
 @api.route('/login', methods=['POST'])
@@ -139,3 +136,4 @@ def get_user_id(id):
         return jsonify({"msg": "User not found" }), 400
     
     return jsonify(user.serialize_all()), 200
+
