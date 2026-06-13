@@ -6,6 +6,7 @@ export const Postcard = ({post}) => {
             <div className="card-body">
                 
                 <p>{post.content}</p>
+                <h5>{post.title}</h5>
 
                 {post.img &&(
                     <img src={post.img}

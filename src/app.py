@@ -10,8 +10,6 @@ from flask_jwt_extended import JWTManager
 from api.utils import APIException, generate_sitemap
 from api.models.models_user import db
 from api.routes import api
-from api.routes import routes_foro
-from api.routes.routes_post import *
 from api.admin import setup_admin
 from api.commands import setup_commands
 from api.extension import bcrypt
@@ -28,7 +26,6 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 CORS(app)
-
 # JWT
 #app.config["JWT_SECRET_KEY"] = "mindfed-secret-key"
 app.config["JWT_SECRET_KEY"] = os.getenv("FLASK_JWT")

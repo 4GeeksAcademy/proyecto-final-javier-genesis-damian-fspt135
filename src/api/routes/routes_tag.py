@@ -5,7 +5,7 @@ from api.models.models_user import User
 from api.models.models_foro import Foro
 from api.models.model_select_tag import Tag_select
 from api.database.db import db
-from api.routes import api
+from . import api
 
 #para uso de creacion de una tag personalizada para que usuariO la cree
 # @api.route('/tag', methods=["POST"])
