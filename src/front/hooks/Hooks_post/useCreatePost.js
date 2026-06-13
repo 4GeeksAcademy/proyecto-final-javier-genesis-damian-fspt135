@@ -13,6 +13,8 @@ export const useCreatePost = (forumId) => {
         console.log("BOTÓN PUBLICAR PRESIONADO");
 
        const token = localStorage.getItem("token");
+
+        console.log("TOKEN:", token);
     
 
         const formData = new FormData();

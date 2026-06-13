@@ -29,7 +29,7 @@ export const useProfile = () => {
             setSuccess(true);
             console.log("Perfil completado con éxito:", data);
             
-            navigate("/home"); 
+            navigate("/"); 
         } catch (err) {
             setError(err.message || "Error al actualizar el perfil");
         } finally {

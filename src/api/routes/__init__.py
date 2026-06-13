@@ -1,10 +1,8 @@
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Blueprint
 from flask_cors import CORS
 
 api = Blueprint('api', __name__)
 CORS(api)
 
-from . import routes_user
-from . import routes_tag
-from . import routes_foro
-from . import routes_post
+# Las rutas se registran importando los módulos DESPUÉS de crear el blueprint
+from api.routes import routes_user, routes_tag, routes_foro, routes_post

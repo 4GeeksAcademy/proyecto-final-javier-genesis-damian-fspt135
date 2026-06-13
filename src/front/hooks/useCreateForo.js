@@ -42,7 +42,7 @@ export const useCreateForo = () => {
       setDescription("");
 
       setTimeout(() => {
-        navigate("/home");
+        navigate("/");
       }, 1500);
 
     } catch (err) {
