@@ -45,7 +45,7 @@ export const CreateForo = () => {
           <div className="col-auto">
             {img ? (
               <img 
-                src={img} 
+                src={img instanceof File ? URL.createObjectURL(img) : null}
                 alt="Foro preview" 
                 className="rounded-circle shadow-sm object-fit-cover"
                 style={{ width: "65px", height: "65px" }}
@@ -88,11 +88,10 @@ export const CreateForo = () => {
                   <i className="bi bi-image"></i>
                 </span>
                 <input
-                  type="url"
+                  type="file"
                   className="form-control border-light-subtle"
-                  placeholder="URL opcional de la imagen del foro"
-                  value={img}
-                  onChange={(e) => setImg(e.target.value)}
+                  accept="image/*"
+                  onChange={(e) => setImg(e.target.files[0])}
                 />
               </div>
             </div>

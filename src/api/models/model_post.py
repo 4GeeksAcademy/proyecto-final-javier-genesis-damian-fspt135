@@ -1,5 +1,5 @@
 from api.database.db import db
-from sqlalchemy import String, Boolean, ForeignKey, func
+from sqlalchemy import String, Boolean, Text,  ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
 from datetime import datetime
@@ -11,7 +11,7 @@ class Post (db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(120), nullable=False)
     content: Mapped[str] = mapped_column(String(255),nullable=False)
-    img: Mapped[str] = mapped_column(String(255),nullable=True)
+    img: Mapped[str] = mapped_column(Text,nullable=True)
     user_id = mapped_column(ForeignKey("user.id"), nullable=False)
     foro_id: Mapped[int] = mapped_column(ForeignKey("foro.id"), nullable=True)
     foro = relationship("Foro", back_populates="post")
