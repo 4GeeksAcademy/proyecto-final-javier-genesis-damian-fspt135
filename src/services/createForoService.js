@@ -8,17 +8,20 @@ export const createForo = async (foroData) => {
   }
 
   try {
+    const formData = new FormData();
+    formData.append("title", foroData.title);
+    formData.append("description", foroData.description || "");
+    if (foroData.img) {
+      formData.append("img", foroData.img); 
+    }
+
     const response = await fetch(`${BACKEND_URL}/api/foro`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
+   
       },
-      body: JSON.stringify({
-        title: foroData.title,
-        img: foroData.img,
-        description: foroData.description
-      }),
+      body: formData
     });
 
     const textData = await response.text();

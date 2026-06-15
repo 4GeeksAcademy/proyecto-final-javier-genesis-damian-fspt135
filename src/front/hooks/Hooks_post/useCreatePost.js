@@ -7,6 +7,8 @@ export const useCreatePost = (forumId) => {
     const [img, setImg] = useState(null);
     const [title, setTitle] = useState("");
     const [preview, setPreview] = useState(null);
+    const [success, setSuccess] = useState(false);
+
 
     const handleSubmit = async () => {
 
@@ -36,6 +38,10 @@ export const useCreatePost = (forumId) => {
 
             console.log(data);
 
+
+            setSuccess(true);
+            setTimeout(() => setSuccess(false), 3000);
+
             setContent("");
             setImg(null);
 
@@ -55,6 +61,7 @@ export const useCreatePost = (forumId) => {
         setImg,
         preview,
         setPreview,
+        success,
         handleSubmit
     };
 };
