@@ -13,6 +13,7 @@ import { Demo } from "./pages/Demo";
 import { RegisterForm } from "./pages/RegisterForm"
 import { DataProfile } from "./pages/DataProfile"
 import { CreateForo } from "./pages/CreateForo";
+import { CreateFeed } from "./pages/CreateFeed";
 
 
 export const router = createBrowserRouter(
@@ -33,6 +34,7 @@ export const router = createBrowserRouter(
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/data-profile" element={<DataProfile />} />
         <Route path="/create-foro" element={<CreateForo />} />
+         <Route path="/createfeed" element={<CreateFeed />} />
       </Route>
       </>
     )
