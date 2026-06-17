@@ -43,31 +43,27 @@ def all_tags():
 @api.route('/tag-select', methods=["POST"])
 @jwt_required()
 def select_tag():
+    user_token = get_jwt_identity()
+    
     data = request.get_json()
-    tag_id = data.get('tag_id')
-    user_id = data.get('user_id')
-    foro_id = data.get('foro_id')
+    tags_id = data.get('tags_id')
+    user_id = int(user_token)
+    
 
-    if tag_id is None:
+    if tags_id is None:
         return jsonify({"msg": "Bad request i need tag_id"}), 400
     
-    if (user_id is None and foro_id is None) or (user_id is not None and foro_id is not None):
-        return jsonify({"msg": 'i need user_id or foro_id, not both'}), 400
-    
-    tag_exists = db.session.get(Tag, tag_id)
-    if tag_exists is None:
-        return jsonify({"msg": "Tag not found"}), 404
-    
-    new_tag_select = Tag_select(tag_id=tag_id, user_id=user_id, foro_id=foro_id)
-    db.session.add(new_tag_select)
+    for tag in tags_id:
+
+        tag_exists = db.session.get(Tag, tag)
+        if tag_exists is None:
+            return jsonify({"msg": "Tag not found"}), 404
+        
+        new_tag_select = Tag_select(tag_id=tag, user_id=user_id)
+        db.session.add(new_tag_select)
     db.session.commit()
 
-    if user_id is not None:
-        response_data = new_tag_select.serialize_tag_user()
-    else:
-        response_data = new_tag_select.serialize_tag_foro()
-
-    return jsonify({"msg": "Tag assigned", "Tag_select": response_data}), 201
+    return jsonify({"msg": "Tag assigned", "Tag_select":new_tag_select.serialize_tag_user()}), 201
     
 @api.route('/tag/user/<int:user_id>', methods=['GET'])
 @jwt_required()

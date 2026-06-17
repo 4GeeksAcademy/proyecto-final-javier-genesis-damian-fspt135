@@ -1,7 +1,21 @@
 import React from "react";
+import { useEffect } from "react";
 import { useProfile } from "../hooks/useProfile";
+import { useTag } from "../hooks/useTag";
+import { BodyTag } from "../components/BodyTag.jsx";
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+
 
 export const DataProfile = () => {
+
+    const { store, dispatch } = useGlobalReducer()
+    
+    const {getDataTag, onSelectedTag, handleSave} = useTag();
+
+    useEffect(()=>{
+        getDataTag();
+    },[]);
+   
     const {
         firstName, setFirstName,
         lastName, setLastName,
@@ -14,13 +28,23 @@ export const DataProfile = () => {
         handleUpdateProfile
     } = useProfile();
 
+    const saveProfile = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await handleUpdateProfile();
+            const resTag = await handleSave();
+        }catch (err) {
+    console.error("Error to save profile", err);
+  }
+    }
+
     return (
         <div className="container my-5">
             <div className="row justify-content-center">
                 <div className="col-md-8 col-lg-6">
                     <div className="card shadow-sm p-4">
                         <h2 className="text-center mb-4">Completa tu Perfil</h2>
-                        
+
                         {error && <div className="alert alert-danger">{error}</div>}
                         {success && <div className="alert alert-success">¡Perfil actualizado con éxito!</div>}
 
@@ -91,11 +115,21 @@ export const DataProfile = () => {
                                 ></textarea>
                             </div>
 
+                            <div>
+                                <label className="form-label fw-bold" >Selecciona tus gustos</label>
+                                <div className="d-flex flex-wrap gap-2 border p-3 rounded bg-light">
+                                {store.tags && store.tags.map((tag)=>
+                                <BodyTag key={tag.id} tag={tag} onSelectedTag={onSelectedTag}/>
+                                )}
+                                </div>
+                            </div>
+
                             <div className="d-grid">
-                                <button 
-                                    type="submit" 
+                                <button
+                                    type="submit"
                                     className="btn btn-primary btn-lg"
                                     disabled={loading}
+                                    onClick={saveProfile}
                                 >
                                     {loading ? "Guardando..." : "Guardar Perfil"}
                                 </button>

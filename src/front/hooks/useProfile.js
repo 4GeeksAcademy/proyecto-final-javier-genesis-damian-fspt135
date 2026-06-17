@@ -15,8 +15,7 @@ export const useProfile = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    const handleUpdateProfile = async (e) => {
-        e.preventDefault();
+    const handleUpdateProfile = async () => {
         setError("");
         setLoading(true);
 
