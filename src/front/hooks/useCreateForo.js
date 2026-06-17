@@ -6,7 +6,7 @@ export const useCreateForo = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState(null);
   const [description, setDescription] = useState("");
 
   const [error, setError] = useState("");
@@ -29,7 +29,7 @@ export const useCreateForo = () => {
     try {
       const foroData = { 
         title, 
-        img: img || null, 
+        img,
         description 
       };
       

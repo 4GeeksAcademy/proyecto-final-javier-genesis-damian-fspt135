@@ -5,7 +5,7 @@ from api.database.db import db
 
 import cloudinary
 import cloudinary.uploader
-import api.cloudinary.cloudinary_config
+from api.cloudinary.cloudinary_config import *
 
 # Importación circular segura: se resuelve porque routes/__init__.py
 # ya terminó de crear `api` antes de llegar a esta línea
@@ -42,7 +42,7 @@ def create_post():
 
                 upload_result = cloudinary.uploader.upload(
                 file_to_upload,
-                upload_preset="neqycdyx"  # ← agrega esto
+                upload_preset="neqycdyx"  
                 )
                 
 

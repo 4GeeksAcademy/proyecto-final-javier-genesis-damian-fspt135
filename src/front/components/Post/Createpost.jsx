@@ -11,6 +11,7 @@ export const CreatePost = ({ forumId }) => {
         setImg,
         preview,
         setPreview,
+        success,
         handleSubmit
     } = useCreatePost(forumId);
 
@@ -28,6 +29,13 @@ export const CreatePost = ({ forumId }) => {
                             <h3 className="text-center fw-bold mb-4 creacion-post-title">
                                 CREACIÓN POST
                             </h3>
+
+                             {success && (                        // ← nuevo
+                                <div className="alert alert-success text-center" role="alert">
+                                    ✅ ¡Post creado exitosamente!
+                                </div>
+                            )}
+
 
                             <input
                                 type="text"
