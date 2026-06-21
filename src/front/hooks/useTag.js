@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getTags } from "../../services/tagService.js";
 import { useNavigate } from "react-router-dom";
-import { selectTagFromUser } from "../../services/tagService.js";
+import { selectTagFromUser, selectTagFromForo } from "../../services/tagService.js";
 import { BsTags } from "react-icons/bs";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
@@ -45,11 +45,27 @@ export const useTag = () =>{
         }
     }
 
+    const handleSaveForo = async (foroId) => {
+        try{
+            if (setSelectedTag.length === 0 ) {
+                return;
+            }
+            console.log(selectedTag);
+            
+           const res = await selectTagFromForo(foroId, selectedTag)
+           console.log(res);
+           
+        }catch (err) {
+            setError(err.message || "Error seleccionar tags");
+        }
+    }
+
 
     return{
        getDataTag,
        onSelectedTag,
-       handleSave
+       handleSave,
+       handleSaveForo
     };  
 
 };

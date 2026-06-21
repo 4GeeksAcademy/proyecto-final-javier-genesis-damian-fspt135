@@ -36,6 +36,7 @@ export const useCreateForo = () => {
       const data = await createForo(foroData);
       
       setSuccess(true);
+      return data;
       
       setTitle("");
       setImg("");

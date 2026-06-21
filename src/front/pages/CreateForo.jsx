@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCreateForo } from "../hooks/useCreateForo";
+import { BodyTag } from "../components/BodyTag.jsx";
+import { useTag } from "../hooks/useTag.js";
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 export const CreateForo = () => {
+
+  const { store, dispatch } = useGlobalReducer()
+
   const {
     title,
     setTitle,
@@ -16,17 +22,36 @@ export const CreateForo = () => {
     handleCreateForo
   } = useCreateForo();
 
-  const [likeCount, setLikeCount] = useState(0);
 
-  const handleLike = () => {
-    setLikeCount((prev) => prev + 1);
-  };
+  const {getDataTag, onSelectedTag, handleSaveForo} = useTag();
+
+  useEffect(()=>{
+          getDataTag();
+      },[]);
+
+  // const [likeCount, setLikeCount] = useState(0);
+
+  // const handleLike = () => {
+  //   setLikeCount((prev) => prev + 1);
+  // };
+
+  const saveForo= async (e) => {
+        e.preventDefault()
+        try {
+            const res = await handleCreateForo();
+            const foroId = res.forum.id;
+            await handleSaveForo(foroId);
+        }catch (err) {
+    console.error("Error to save foro", err);
+  }
+    }
+
 
   return (
     <div className="container py-4 min-vh-100 d-flex flex-column justify-content-between">
-      
-      <form onSubmit={handleCreateForo} className="h-100 d-flex flex-column flex-grow-1 justify-content-between">
-        
+
+      <form onSubmit={saveForo} className="h-100 d-flex flex-column flex-grow-1 justify-content-between">
+
         <div className="mb-3">
           {error && (
             <div className="alert alert-danger text-center shadow-sm py-2" role="alert">
@@ -41,12 +66,12 @@ export const CreateForo = () => {
         </div>
 
         <div className="row align-items-center mb-4 g-3">
-          
+
           <div className="col-auto">
             {img ? (
-              <img 
+              <img
                 src={img instanceof File ? URL.createObjectURL(img) : null}
-                alt="Foro preview" 
+                alt="Foro preview"
                 className="rounded-circle shadow-sm object-fit-cover"
                 style={{ width: "65px", height: "65px" }}
                 onError={(e) => {
@@ -54,8 +79,8 @@ export const CreateForo = () => {
                 }}
               />
             ) : (
-              <div 
-                className="bg-primary text-white d-flex align-items-center justify-content-center rounded-circle shadow-sm" 
+              <div
+                className="bg-primary text-white d-flex align-items-center justify-content-center rounded-circle shadow-sm"
                 style={{ width: "65px", height: "65px", fontSize: "1.8rem" }}
               >
                 💬
@@ -77,7 +102,7 @@ export const CreateForo = () => {
             </div>
           </div>
 
-          
+
         </div>
 
         <div className="row mb-3">
@@ -117,10 +142,20 @@ export const CreateForo = () => {
           </div>
         </div>
 
+
+        <div>
+          <label className="form-label fw-bold" >Selecciona tus gustos</label>
+          <div className="d-flex flex-wrap gap-2 border p-3 rounded bg-light">
+            {store.tags && store.tags.map((tag) =>
+              <BodyTag key={tag.id} tag={tag} onSelectedTag={onSelectedTag} />
+            )}
+          </div>
+        </div>
+
         <div className="row justify-content-between align-items-center g-3">
           <div className="col-auto">
-            <Link 
-              to="/foro" 
+            <Link
+              to="/foro"
               className="btn btn-outline-secondary btn-lg rounded-pill shadow-sm px-4 fw-bold fs-6"
             >
               <i className="bi bi-arrow-left me-2"></i>Back Home
@@ -128,8 +163,8 @@ export const CreateForo = () => {
           </div>
 
           <div className="col-auto">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="btn btn-primary btn-lg rounded-pill shadow-sm px-5 fw-bold fs-6"
               disabled={loading}
             >

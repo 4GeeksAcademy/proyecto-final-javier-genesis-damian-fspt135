@@ -38,3 +38,28 @@ export const selectTagFromUser = async (selectTags) => {
     console.error("Error to get tags", err);
   }
 }
+
+export const selectTagFromForo = async (foroId, tagsId) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${BACKEND_URL}/api/tag-select-foro`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        foro_id: foroId,
+        tags_id: tagsId
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.msg || "Error al asignar tags al foro");
+    }
+    return data;
+  } catch (err) {
+    console.error("Error to get tags", err);
+    throw err;
+  }
+}
