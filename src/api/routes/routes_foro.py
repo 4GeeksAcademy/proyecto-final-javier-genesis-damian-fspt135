@@ -33,7 +33,7 @@ def create_forum():
         title=title,
         img=img_url,                         
         description=description,
-        user_id=get_jwt_identity()
+        user_id=int(get_jwt_identity())
     )
 
     db.session.add(new_forum)

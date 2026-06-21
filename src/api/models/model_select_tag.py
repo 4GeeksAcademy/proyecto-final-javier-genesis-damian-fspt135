@@ -9,11 +9,11 @@ from typing import List
 class Tag_select(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id = mapped_column(ForeignKey("user.id"), nullable=True)
-    user = relationship('User')
     foro_id = mapped_column(ForeignKey("foro.id"), nullable=True)
-    foro = relationship('Foro')
     tag_id = mapped_column(ForeignKey("tag.id"), nullable=False)
-    tag = relationship('Tag')
+    user = db.relationship('User', overlaps="tag") 
+    foro = db.relationship('Foro', overlaps="tag")
+    tag = db.relationship('Tag', overlaps="tag")
 
     def serialize_tag_user(self):
         return{
