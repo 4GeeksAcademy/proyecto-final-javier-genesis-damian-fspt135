@@ -1,8 +1,8 @@
 from api.database.db import db
-from sqlalchemy import String, Boolean, ForeignKey, func
+from sqlalchemy import String, Boolean, ForeignKey, func, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
-
+from datetime import datetime
 
 
 class User(db.Model):
@@ -10,7 +10,7 @@ class User(db.Model):
     username: Mapped[str]= mapped_column(String(120), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(255),nullable=False)
-    img: Mapped[str] = mapped_column(String(255),nullable=True)
+    img: Mapped[str] = mapped_column(Text, nullable=True)
     first_name: Mapped[str] = mapped_column(String(255),nullable=True)
     last_name: Mapped[str] = mapped_column(String(255),nullable=True)
     date_birth: Mapped[str] = mapped_column(String(255),nullable=True)
@@ -19,13 +19,17 @@ class User(db.Model):
     foro = relationship('Foro')
     post = relationship('Post')
     tag = relationship('Tag_select')
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+
 
     def serialize(self):
         return {
             "id": self.id,
             "username": self.username,
             "email": self.email,
-            # do not serialize the password, its a security breach
+            "created_at": str(self.created_at),
+            "updated_at": str(self.updated_at)
         }
     
     def serialize_all(self):
@@ -37,5 +41,6 @@ class User(db.Model):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "date_birth": self.date_birth,
-            "description": self.description
+            "description": self.description,
+            "updated_at": str(self.updated_at)
         }

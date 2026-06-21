@@ -20,9 +20,10 @@ export const useTag = () =>{
 
     const onSelectedTag = async (tag) =>{
         try{
-            console.log(tag);
-            
-           setSelectedTag([...selectedTag, tag.id])
+            if (selectedTag.includes(tag.id)){
+                setSelectedTag(selectedTag.filter(id => id !== tag.id));
+            } else {
+           setSelectedTag([...selectedTag, tag.id]); }
             
         }catch (err) {
             setError(err.message || "Error seleccionar tags");
@@ -49,7 +50,8 @@ export const useTag = () =>{
     return{
        getDataTag,
        onSelectedTag,
-       handleSave
+       handleSave,
+       selectedTag
     };  
 
 };

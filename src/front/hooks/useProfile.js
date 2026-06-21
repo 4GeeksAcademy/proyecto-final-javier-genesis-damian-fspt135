@@ -8,8 +8,9 @@ export const useProfile = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [birthDate, setBirthDate] = useState("");
-    const [profileImg, setProfileImg] = useState("");
+    const [profileImg, setProfileImg] = useState(null);
     const [description, setDescription] = useState("");
+    
     
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);

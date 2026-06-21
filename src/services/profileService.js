@@ -12,19 +12,21 @@ export const updateProfile = async (userId, profileData) => {
   }
 
   try {
+    const formData = new FormData();
+    formData.append("first_name", profileData.firstName);
+    formData.append("last_name", profileData.lastName);
+    formData.append("date_birth", profileData.birthDate);
+    formData.append("description", profileData.description);
+    if (profileData.profileImg){
+      formData.append("img", profileData.profileImg)
+    }
+
     const response = await fetch(`${BACKEND_URL}/api/profile/eddit/${userId}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify({
-        first_name: profileData.firstName,
-        last_name: profileData.lastName,
-        date_birth: profileData.birthDate,
-        img: profileData.profileImg,
-        description: profileData.description
-      }),
+      body: formData
     });
 
     const textData = await response.text();
