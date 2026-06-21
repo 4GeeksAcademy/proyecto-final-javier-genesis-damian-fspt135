@@ -9,13 +9,13 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 export const DataProfile = () => {
 
     const { store, dispatch } = useGlobalReducer()
-    
-    const {getDataTag, onSelectedTag, handleSave} = useTag();
 
-    useEffect(()=>{
+    const { getDataTag, onSelectedTag, handleSave, selectedTag } = useTag();
+
+    useEffect(() => {
         getDataTag();
-    },[]);
-   
+    }, []);
+
     const {
         firstName, setFirstName,
         lastName, setLastName,
@@ -33,9 +33,9 @@ export const DataProfile = () => {
         try {
             const res = await handleUpdateProfile();
             const resTag = await handleSave();
-        }catch (err) {
-    console.error("Error to save profile", err);
-  }
+        } catch (err) {
+            console.error("Error to save profile", err);
+        }
     }
 
     return (
@@ -90,15 +90,29 @@ export const DataProfile = () => {
                             </div>
 
                             <div className="mb-3">
+                                {profileImg ? (
+                                    <img
+                                        src={profileImg instanceof File ? URL.createObjectURL(profileImg) : null}
+                                        alt="Foro preview"
+                                        className="rounded-circle shadow-sm object-fit-cover"
+                                        style={{ width: "65px", height: "65px" }}
+                                        onError={(e) => {
+                                            e.target.src = "https://placehold.co/65?text=Foro";
+                                        }}
+                                    />) : (<div
+                                        className="bg-primary text-white d-flex align-items-center justify-content-center rounded-circle shadow-sm"
+                                        style={{ width: "65px", height: "65px", fontSize: "1.8rem" }}
+                                    >
+                                        💬
+                                    </div>)}
                                 <label htmlFor="profileImg" className="form-label fw-bold">URL de la Imagen de Perfil</label>
                                 <input
-                                    type="url"
+                                    type="file"
                                     className="form-control"
                                     id="profileImg"
                                     name="profileImg"
-                                    placeholder="https://example.com/avatar.jpg"
-                                    value={profileImg}
-                                    onChange={(e) => setProfileImg(e.target.value)}
+                                    accept="image/*"
+                                    onChange={(e) => setProfileImg(e.target.files[0])}
                                 />
                             </div>
 
@@ -115,12 +129,14 @@ export const DataProfile = () => {
                                 ></textarea>
                             </div>
 
-                            <div>
+                            <div className="mb-4">
                                 <label className="form-label fw-bold" >Selecciona tus gustos</label>
-                                <div className="d-flex flex-wrap gap-2 border p-3 rounded bg-light">
-                                {store.tags && store.tags.map((tag)=>
-                                <BodyTag key={tag.id} tag={tag} onSelectedTag={onSelectedTag}/>
-                                )}
+                                <div className="d-flex flex-wrap gap-2 border p-3 rounded bg-light overflow-y-auto"
+                                    style={{ maxHeight: "200px" }}>
+                                    {store.tags && store.tags.map((tag) => {
+                                        const handleSelected = selectedTag.includes(tag.id);
+                                        return (<BodyTag key={tag.id} tag={tag} onSelectedTag={onSelectedTag} isSelected={handleSelected} />);
+                                    })}
                                 </div>
                             </div>
 
