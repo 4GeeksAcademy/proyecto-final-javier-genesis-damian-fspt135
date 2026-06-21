@@ -64,6 +64,31 @@ def select_tag():
     db.session.commit()
 
     return jsonify({"msg": "Tag assigned", "Tag_select":new_tag_select.serialize_tag_user()}), 201
+
+@api.route('/tag-select-foro', methods=["POST"])
+@jwt_required()
+def select_tagForo():
+    # user_token = get_jwt_identity()
+    # user_id = int(user_token)
+
+    data = request.get_json()
+    foro_id = data.get('foro_id')
+    tags_id = data.get('tags_id')
+    
+    if tags_id is None:
+        return jsonify({"msg": "Bad request i need tag_id"}), 400
+    
+    for tag in tags_id:
+
+        tag_exists = db.session.get(Tag, tag)
+        if tag_exists is None:
+            return jsonify({"msg": "Tag not found"}), 404
+        
+        new_tag_select = Tag_select(tag_id=tag, foro_id=foro_id)
+        db.session.add(new_tag_select)
+    db.session.commit()
+
+    return jsonify({"msg": "Tag assigned", "Tag_select":new_tag_select.serialize_tag_foro()}), 201
     
 @api.route('/tag/user/<int:user_id>', methods=['GET'])
 @jwt_required()
