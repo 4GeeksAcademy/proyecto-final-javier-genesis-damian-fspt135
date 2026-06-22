@@ -66,7 +66,7 @@ export const useTag = () =>{
        getDataTag,
        onSelectedTag,
        handleSave,
-       selectedTag
+       selectedTag,
        handleSaveForo
     };  
 

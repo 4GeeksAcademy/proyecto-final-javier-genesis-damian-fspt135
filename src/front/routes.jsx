@@ -8,8 +8,6 @@ import {
 import { Layout } from "./pages/Layout";
 import { Landing } from "./pages/Landing";
 import { CreacionPost } from "./pages/CreacionPost";
-import { Single } from "./pages/Single";
-import { Demo } from "./pages/Demo";
 import { RegisterForm } from "./pages/RegisterForm"
 import { DataProfile } from "./pages/DataProfile"
 import { CreateForo } from "./pages/CreateForo";
@@ -28,8 +26,6 @@ export const router = createBrowserRouter(
       <>
       <Route path= "/" element={<Landing />} />
       <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
-        {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-        <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
         <Route path="/create-post" element={<CreacionPost />} /> 
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/data-profile" element={<DataProfile />} />

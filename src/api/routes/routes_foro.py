@@ -55,6 +55,8 @@ def get_forums():
     ]), 200
 
 
+
+
 @api.route("/foro/<int:forum_id>", methods=["GET"])
 def get_forum_id(forum_id):
 
