@@ -7,33 +7,38 @@ export const useLogin = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    const handleLogin = async () => {
+const handleLogin = async () => {
 
-        setError("");
+    setError("");
 
-        const data = await loginUser(
-            email,
-            password
-        );
+    const data = await loginUser(
+        email,
+        password
+    );
 
-        if (!data) {
-            setError("Error de conexión");
-            return;
-        }
+    if (!data) {
+        setError("Error de conexión");
+        return;
+    }
 
-        if (!data.success) {
-            setError(data.msg);
-            return;
-        }
+    if (!data.success) {
+        setError(data.msg);
+        return;
+    }
 
-        localStorage.setItem(
-            "token",
-            data.token
-        );
+    localStorage.setItem(
+        "token",
+        data.token
+    );
 
-        console.log("Login correcto");
-        console.log(data);
-    };
+    localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+    );
+
+    console.log("Login correcto");
+    console.log(data);
+};
 
     return {
         email,

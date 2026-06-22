@@ -17,6 +17,7 @@ class User(db.Model):
     description: Mapped[str] = mapped_column(String(255),nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean(), default=True)
     foro = relationship('Foro')
+    following= relationship("Follow", cascade="all, delete-orphan")
     post = relationship('Post')
     tag = relationship('Tag_select')
 
