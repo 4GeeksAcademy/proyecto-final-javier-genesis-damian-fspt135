@@ -13,7 +13,8 @@ class Foro(db.Model):
     description: Mapped[str] = mapped_column(Text, nullable=True)
     user_id = mapped_column(ForeignKey("user.id"), nullable=False)
     tag = relationship('Tag_select')
-    post = relationship('Post')
+    post = relationship( "Post", back_populates="foro")
+    following= relationship("Follow", cascade="all, delete-orphan")
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
 
@@ -25,6 +26,9 @@ class Foro(db.Model):
         "img": self.img,
         "description": self.description,
         "user_id": self.user_id,
+        "posts": [
+            post.serialize_post()
+            for post in self.post],
         "created_at": str(self.created_at),
         "updated_at": str(self. updated_at)
         

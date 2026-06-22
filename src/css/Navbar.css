@@ -1,17 +1,46 @@
-.mindfed-navbar {
-    background-color: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    height: 90px;
-    display: flex;
-    align-items: center;
+.navbar-content{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
 }
 
-.mindfed-logo {
-    height: 60px;
-    object-fit: contain;
-    transition: transform 0.3s ease;
+.mindfed-logo{
+    height:80px;
+    object-fit:contain;
 }
 
-.mindfed-logo:hover {
-    transform: scale(1.05);
+.navbar-search-container{
+    flex:1;
+}
+
+.navbar-search{
+    height:50px;
+    border-radius:15px;
+}
+
+.menu-btn{
+    width:55px;
+    height:55px;
+    border-radius:12px;
+    font-size:24px;
+}
+
+@media (max-width:768px){
+
+    .mindfed-logo{
+        height:60px;
+    }
+
+    .navbar-search{
+        height:45px;
+        font-size:14px;
+    }
+
+    .menu-btn{
+        width:45px;
+        height:45px;
+        font-size:20px;
+    }
+
 }
