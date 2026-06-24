@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { loginUser } from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
+
+ const navigate = useNavigate()
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false)
 
 const handleLogin = async () => {
 
@@ -36,6 +40,8 @@ const handleLogin = async () => {
         JSON.stringify(data.user)
     );
 
+    navigate("/feed");
+
     console.log("Login correcto");
     console.log(data);
 };
@@ -45,6 +51,8 @@ const handleLogin = async () => {
         setEmail,
         password,
         setPassword,
+        showPassword,
+        setShowPassword,
         error,
         handleLogin
     };

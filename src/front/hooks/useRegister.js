@@ -7,8 +7,10 @@ export const useRegister = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
+    
 
     const handleRegister = async () => {
         setError("");
@@ -45,6 +47,8 @@ export const useRegister = () => {
         setEmail,
         password,
         setPassword,
+        showPassword,
+        setShowPassword,
         error,
         success,
         handleRegister

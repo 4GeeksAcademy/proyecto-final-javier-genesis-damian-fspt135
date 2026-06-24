@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRegister } from "../hooks/useRegister";
 import { Link } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export const RegisterForm = () => {
   const {
@@ -10,6 +11,8 @@ export const RegisterForm = () => {
     setEmail,
     password,
     setPassword,
+    showPassword,
+    setShowPassword,
     error,
     handleRegister
   } = useRegister();
@@ -70,14 +73,19 @@ export const RegisterForm = () => {
 
             <div className="form-floating mb-4">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 className="form-control"
-                id="passwordInput"
-                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
+
+              <span
+                className="password-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+
               <label htmlFor="passwordInput">
                 <i className="bi bi-lock-fill me-2 text-muted"></i>Password
               </label>
