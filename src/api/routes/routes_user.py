@@ -81,8 +81,8 @@ def register_user():
     db.session.add(new_user)
     db.session.commit()
     token = create_access_token(identity=str(new_user.id))
-    
-    return jsonify({"msg": "User created", "token": token, 'user': new_user.serialize()}), 201
+    jsonify
+    return ({"msg": "User created", "token": token, 'user': new_user.serialize()}), 201
 
 
 @api.route('/profile/eddit/<int:id>', methods=['PUT'])
