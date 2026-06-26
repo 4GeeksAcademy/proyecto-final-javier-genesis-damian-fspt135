@@ -58,7 +58,7 @@ export const DataProfile = () => {
                                         className="form-control"
                                         id="firstName"
                                         name="firstName"
-                                        placeholder="Javier"
+                                        placeholder="Nombre"
                                         value={firstName}
                                         onChange={(e) => setFirstName(e.target.value)}
                                     />
@@ -70,7 +70,7 @@ export const DataProfile = () => {
                                         className="form-control"
                                         id="lastName"
                                         name="lastName"
-                                        placeholder="Brenner"
+                                        placeholder="Apellido"
                                         value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}
                                     />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getForos } from "../../services/createForoService";
+import { getForos } from "../../services/foroService";
 import {getMyFollow} from "../../services/followService"
 
 export const useFeed = () => {

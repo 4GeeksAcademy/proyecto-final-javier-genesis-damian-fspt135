@@ -26,10 +26,13 @@ class Foro(db.Model):
         "img": self.img,
         "description": self.description,
         "user_id": self.user_id,
+        "tags": [
+            tag.serialize_tag_foro()
+            for tag in self.tag],
         "posts": [
             post.serialize_post()
             for post in self.post],
         "created_at": str(self.created_at),
-        "updated_at": str(self. updated_at)
+        "updated_at": str(self.updated_at)
         
     }

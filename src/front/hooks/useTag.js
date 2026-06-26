@@ -8,7 +8,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 export const useTag = () =>{
 
     const { store, dispatch } = useGlobalReducer();
-    const [selectedTag, setSelectedTag] = useState([]);
+    const [selectedTag, setSelectedTag] = useState([]);    
     const [error, setError] = useState("");
 
     const getDataTag = async () =>{
