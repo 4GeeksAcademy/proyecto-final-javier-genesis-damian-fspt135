@@ -1,6 +1,7 @@
 export const initialStore=()=>{
   return{
-    tags: []
+    tags: [],
+    foros:[]
   }
 }
 
@@ -12,6 +13,11 @@ export default function storeReducer(store, action = {}) {
         tags: action.payload
     };
 
+    case 'all_foros':
+      return{
+        ...store,
+        foros: action.payload
+      }; 
     
     default:
 			throw Error('Unknown action.');

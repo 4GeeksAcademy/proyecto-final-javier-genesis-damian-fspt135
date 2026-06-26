@@ -15,3 +15,11 @@ export const BodyTag = ({tag, onSelectedTag, isSelected}) =>{
         </div>
     )
 }
+
+export const BodyTagSimply = ({tag}) =>{
+    return(
+        <div className="d-flex align-items-center m-1 gap-2 p-2 border rounded bg-white shadow-sm">
+            <h6 className="mb-0 text-capitalize">{tag.tag?.title}</h6>
+        </div>
+    )
+}

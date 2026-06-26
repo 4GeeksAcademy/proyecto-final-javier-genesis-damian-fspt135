@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getForos } from "../../services/createForoService";
+import { getForos } from "../../services/foroService";
 
 export const useFeed = () => {
 

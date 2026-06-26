@@ -53,6 +53,14 @@ export const Navbar = () => {
                                 Crear Foro
                             </Link>
                         </li>
+                        <li>
+                            <Link 
+                            className="dropdown-item"
+                                to="/foros"
+                            >
+                            Foros
+                            </Link>
+                        </li>
 
                         <li>
                             <Link

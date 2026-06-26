@@ -9,7 +9,7 @@ export const useTag = () =>{
 
     const { store, dispatch } = useGlobalReducer();
     const [selectedTag, setSelectedTag] = useState([]);
-
+    
     const getDataTag = async () =>{
         try{
             const tagList = await getTags(dispatch);

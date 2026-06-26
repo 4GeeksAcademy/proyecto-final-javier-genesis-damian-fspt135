@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createForo } from "../../services/createForoService"; 
+import { createForo } from "../../../services/foroService"; 
 
 export const useCreateForo = () => {
   const navigate = useNavigate();
