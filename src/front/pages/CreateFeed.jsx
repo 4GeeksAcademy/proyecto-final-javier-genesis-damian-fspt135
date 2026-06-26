@@ -1,22 +1,44 @@
 import { useFeed } from "../hooks/useFeed";
 import "../../css/feed.css";
 import { FaUserCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { followForo } from "../../services/followService";
 
 export const CreateFeed = () => {
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const handleFollow = async (foroId) => {
+        try {
+            const data = await followForo(foroId);
+            console.log(data);
+
+            await loadFollowForos();
+
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
 
     const {
         loading,
         search,
         setSearch,
         myForos,
+        followForos,
+        filteredForos,
+        loadFollowForos,
         allTags,
         activeTag,
         setActiveTag
+
     } = useFeed();
 
     if (loading) {
         return (
-            <div className="text-center mt-5">
+            <div className="text-center mt-5 text-seccess">
                 <h3>Cargando...</h3>
             </div>
         );
@@ -27,29 +49,23 @@ export const CreateFeed = () => {
 
             <aside className="feed-sidebar">
 
-                <div className="profile-card">
+                <Link
+                    to={`/profile/${user?.id}`}
+                    className="profile-card text-decoration-none"
+                >
 
-                    <FaUserCircle className="profile-avatar" />
-
-                    <h5 className="mt-3">
-                        Mi Perfil
-                    </h5>
-
-                </div>
-
-                <div className="sidebar-card">
-
-                    <h5>Buscar Foro</h5>
-
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Buscar foro..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                    <img
+                        src={user?.img}
+                        alt={user?.first_name}
+                        className="profile-avatar"
                     />
 
-                </div>
+                    <h5 className="mt-3 text-danger">
+                        {user?.first_name} {user?.last_name}
+                    </h5>
+
+                </Link>
+
 
                 <div className="sidebar-card">
 
@@ -96,40 +112,40 @@ export const CreateFeed = () => {
 
                 <div className="sidebar-card">
 
-                    <h5>Filtrar por Tags</h5>
-
-                    <button
-                        className={`btn mb-2 me-2 ${activeTag === ""
-                                ? "btn-primary"
-                                : "btn-outline-primary"
-                            }`}
-                        onClick={() => setActiveTag("")}
-                    >
-                        Todos
-                    </button>
+                    <h5>Foros Seguidos</h5>
 
                     {
-                        allTags.length > 0 ? (
+                        followForos.length > 0 ? (
 
-                            allTags.map((tag) => (
+                            <ul className="forum-list">
 
-                                <button
-                                    key={tag}
-                                    className={`btn mb-2 me-2 ${activeTag === tag
-                                            ? "btn-primary"
-                                            : "btn-outline-primary"
-                                        }`}
-                                    onClick={() => setActiveTag(tag)}
-                                >
-                                    {tag}
-                                </button>
+                                {followForos.map((foro) => (
 
-                            ))
+                                    <li
+                                        key={foro.id}
+                                        className="forum-item"
+                                    >
+
+                                        <img
+                                            src={foro.img}
+                                            alt={foro.title}
+                                            className="forum-image"
+                                        />
+
+                                        <span>
+                                            {foro.title}
+                                        </span>
+
+                                    </li>
+
+                                ))}
+
+                            </ul>
 
                         ) : (
 
                             <p className="text-muted">
-                                No hay tags disponibles
+                                No sigues ningún foro actualmente.
                             </p>
 
                         )
@@ -137,34 +153,93 @@ export const CreateFeed = () => {
 
                 </div>
 
-   
+            </aside>
 
-                <div className="sidebar-card">
 
-                    <h5>Foros Recomendados</h5>
+            <main className="feed-main">
 
-                    <div className="recommended-box">
+                <div
+                    id="foroCarousel"
+                    className="carousel slide mb-4"
+                >
+                    <div className="carousel-inner">
 
-                        Próximamente
+                        {filteredForos.slice(0, 3).map((foro, index) => (
+
+                            <div
+                                key={foro.id}
+                                className={`carousel-item ${index === 0 ? "active" : ""}`}
+                            >
+
+                                <img
+                                    src={foro.img}
+                                    alt={foro.title}
+                                    className="carousel-foro-image"
+                                />
+
+                                <div className="carousel-caption">
+                                    <h3>{foro.title}</h3>
+                                    <p>{foro.description}</p>
+                                </div>
+
+                            </div>
+
+                        ))}
 
                     </div>
 
+                    <button
+                        className="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#foroCarousel"
+                        data-bs-slide="prev"
+                    >
+                        <span className="carousel-control-prev-icon"></span>
+                    </button>
+
+                    <button
+                        className="carousel-control-next"
+                        type="button"
+                        data-bs-target="#foroCarousel"
+                        data-bs-slide="next"
+                    >
+                        <span className="carousel-control-next-icon"></span>
+                    </button>
+
                 </div>
 
-            </aside>
-            <main className="feed-main">
 
-                <div className="placeholder-feed">
+                {filteredForos.map((foro) => (
 
-                    <h4>Zona de Foros</h4>
+                    <div
+                        key={foro.id}
+                        className="feed-foro-card mb-3"
+                    >
 
-                    <p>
-                        Aquí se mostrarán los foros y publicaciones.
-                    </p>
+                        <img
+                            src={foro.img}
+                            alt={foro.title}
+                            className="foro-card-image"
+                        />
 
-                </div>
+                        <h3>{foro.title}</h3>
+
+                        <p>{foro.description}</p>
+
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => handleFollow(foro.id)}
+                        >
+                            Seguir
+                        </button>
+
+
+                    </div>
+
+                ))}
 
             </main>
+
 
         </div>
     );

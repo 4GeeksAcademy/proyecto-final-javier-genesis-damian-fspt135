@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 
 import "../../css/Landing.css"
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export const Landing = () => {
 
@@ -16,6 +17,8 @@ export const Landing = () => {
         setEmail,
         password,
         setPassword,
+        showPassword,
+        setShowPassword,
         error,
         handleLogin
     } = useLogin();
@@ -70,7 +73,7 @@ export const Landing = () => {
 
                     <div className="col-lg-6 d-flex justify-content-center">
 
-                        <div className="login-card">
+                        <div className="login-card mb-3">
 
                             <h2 className="login-title">
                                 Iniciar Sesión
@@ -84,13 +87,21 @@ export const Landing = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
 
-                            <input
-                                type="password"
-                                placeholder="Contraseña"
-                                className="form-control mb-4"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
+                            <div className="password-container mb-2">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    className="form-control"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+
+                                <span
+                                    className="password-icon"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </span>
+                            </div>
 
                             {
                                 error && (
@@ -100,15 +111,15 @@ export const Landing = () => {
                                 )
                             }
 
-                           <button
-                                className="btn btn-primary w-100 mb-3"
+                            <button
+                                className="btn btn-primary w-100 mt-2"
                                 onClick={handleLogin}>
                                 Entrar
                             </button>
 
                             <Link
                                 to="/register"
-                                className="btn btn-outline-primary w-100"
+                                className="btn btn-outline-primary w-100 mt-2"
                             >
                                 Registrarse
                             </Link>

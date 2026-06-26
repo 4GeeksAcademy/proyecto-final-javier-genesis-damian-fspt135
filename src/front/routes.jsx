@@ -31,8 +31,9 @@ export const router = createBrowserRouter(
         <Route path="/create-post" element={<CreacionPost />} />
         <Route path="/data-profile" element={<DataProfile />} />
         <Route path="/create-foro" element={<CreateForo />} />
-        <Route path="/create-feed" element={<CreateFeed />} />
+        <Route path="/feed" element={<CreateFeed />} />
         <Route path="/foros" element={<AllForo/>}/>
+         
       </Route>
     </>
   )

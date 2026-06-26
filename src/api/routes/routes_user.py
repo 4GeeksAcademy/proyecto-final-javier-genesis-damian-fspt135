@@ -51,7 +51,10 @@ def login():
         "user": {
             "id": user.id,
             "username": user.username,
-            "email": user.email
+            "email": user.email,
+            "img": user.img,
+            "first_name": user.first_name,
+            "last_name": user.last_name
         }
     }), 200
 
@@ -81,8 +84,8 @@ def register_user():
     db.session.add(new_user)
     db.session.commit()
     token = create_access_token(identity=str(new_user.id))
-    
-    return jsonify({"msg": "User created", "token": token, 'user': new_user.serialize()}), 201
+    jsonify
+    return ({"msg": "User created", "token": token, 'user': new_user.serialize()}), 201
 
 
 @api.route('/profile/eddit/<int:id>', methods=['PUT'])

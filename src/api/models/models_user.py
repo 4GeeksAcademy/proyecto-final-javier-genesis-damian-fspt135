@@ -20,8 +20,8 @@ class User(db.Model):
     following= relationship("Follow", cascade="all, delete-orphan")
     post = relationship('Post')
     tag = relationship('Tag_select')
-    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
-    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+    #created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    #updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
 
 
     def serialize(self):
@@ -29,8 +29,8 @@ class User(db.Model):
             "id": self.id,
             "username": self.username,
             "email": self.email,
-            "created_at": str(self.created_at),
-            "updated_at": str(self.updated_at)
+            #"created_at": str(self.created_at),
+            #"updated_at": str(self.updated_at)
         }
     
     def serialize_all(self):
@@ -43,5 +43,5 @@ class User(db.Model):
             "last_name": self.last_name,
             "date_birth": self.date_birth,
             "description": self.description,
-            "updated_at": str(self.updated_at)
+            #"updated_at": str(self.updated_at)
         }
