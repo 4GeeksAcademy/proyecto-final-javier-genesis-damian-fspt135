@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { getForos } from "../../services/createForoService";
+import {getMyFollow} from "../../services/followService"
 
 export const useFeed = () => {
 
     const [foros, setForos] = useState([]);
+    const [followForos, setFollowForos] = useState([])
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [activeTag, setActiveTag] = useState("");
@@ -12,6 +14,7 @@ export const useFeed = () => {
 
     useEffect(() => {
         loadForos();
+        loadFollowForos();
     }, []);
 
     const loadForos = async () => {
@@ -25,6 +28,22 @@ export const useFeed = () => {
             setLoading(false);
         }
     };
+
+   const loadFollowForos = async () => {
+    try {
+
+        const data = await getMyFollow();
+
+        setFollowForos(
+            data.slice(-3).reverse()
+        );
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+};
 
     const allTags = [
         ...new Set(
@@ -54,6 +73,8 @@ export const useFeed = () => {
     setSearch,
     filteredForos,
     myForos,
+    followForos,
+    loadFollowForos,
     allTags,
     activeTag,
     setActiveTag

@@ -9,6 +9,7 @@ export const useTag = () =>{
 
     const { store, dispatch } = useGlobalReducer();
     const [selectedTag, setSelectedTag] = useState([]);
+    const [error, setError] = useState("");
 
     const getDataTag = async () =>{
         try{
@@ -48,7 +49,7 @@ export const useTag = () =>{
 
     const handleSaveForo = async (foroId) => {
         try{
-            if (setSelectedTag.length === 0 ) {
+            if (selectedTag.length === 0) {
                 return;
             }
             console.log(selectedTag);
