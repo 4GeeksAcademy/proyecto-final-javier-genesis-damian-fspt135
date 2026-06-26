@@ -4,7 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { followForo } from "../../services/followService";
 
-export const CreateFeed = () => {
+export const Feed = () => {
 
     const user = JSON.parse(localStorage.getItem("user"));
 

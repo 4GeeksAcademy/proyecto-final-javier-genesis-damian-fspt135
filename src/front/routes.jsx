@@ -11,8 +11,8 @@ import { CreacionPost } from "./pages/CreacionPost";
 import { RegisterForm } from "./pages/RegisterForm"
 import { DataProfile } from "./pages/DataProfile"
 import { CreateForo } from "./pages/CreateForo";
-import { CreateFeed } from "./pages/CreateFeed";
-import { AllForo } from "./pages/AllForos";
+import { Feed } from "./pages/Feed";
+import { AllForos } from "./pages/AllForos";
 
 
 export const router = createBrowserRouter(
@@ -31,9 +31,8 @@ export const router = createBrowserRouter(
         <Route path="/create-post" element={<CreacionPost />} />
         <Route path="/data-profile" element={<DataProfile />} />
         <Route path="/create-foro" element={<CreateForo />} />
-        <Route path="/feed" element={<CreateFeed />} />
-        <Route path="/foros" element={<AllForo/>}/>
-         
+        <Route path="/feed" element={<Feed />} />
+        <Route path="/foros" element={<AllForos/>}/>
       </Route>
     </>
   )

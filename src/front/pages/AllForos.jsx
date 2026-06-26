@@ -6,12 +6,14 @@ import { useForo } from "../hooks/Hooks_foro/useForo.js";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 
-export const AllForo = () => {
+export const AllForos = () => {
     const { store, dispatch } = useGlobalReducer()
 
     const { getDataForo } = useForo();
 
     useEffect(() => {
+        console.log("estoy en los foros");
+        
         getDataForo();
     }, []);
 
@@ -37,11 +39,12 @@ export const AllForo = () => {
             </div>
 
             <div className="mb-4">
-
-                <button className="btn btn-outline-secondary px-4 fw-bold mt-3">
+                <Link
+                to="/feed"
+                className="btn btn-outline-secondary px-4 fw-bold mt-3"
+                >
                     Back
-                </button>
-                
+                </Link>
             </div>
         </div>
     )

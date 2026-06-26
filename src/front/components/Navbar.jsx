@@ -10,7 +10,7 @@ export const Navbar = () => {
 
             <div className="container-fluid navbar-content">
                 <Link
-                    to="/createfeed"
+                    to="/feed"
                     className="navbar-brand"
                 >
 
@@ -48,7 +48,7 @@ export const Navbar = () => {
                         <li>
                             <Link
                                 className="dropdown-item"
-                                to="/createforo"
+                                to="/create-foro"
                             >
                                 Crear Foro
                             </Link>
