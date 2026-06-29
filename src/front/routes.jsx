@@ -12,6 +12,7 @@ import { RegisterForm } from "./pages/RegisterForm"
 import { DataProfile } from "./pages/DataProfile"
 import { CreateForo } from "./pages/CreateForo";
 import { CreateFeed } from "./pages/CreateFeed";
+import { Profile } from "./pages/Profile";
 
 
 export const router = createBrowserRouter(
@@ -26,11 +27,11 @@ export const router = createBrowserRouter(
       <>
       <Route path= "/" element={<Landing />} />
       <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
-        <Route path="/create-post" element={<CreacionPost />} /> 
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/data-profile" element={<DataProfile />} />
         <Route path="/create-foro" element={<CreateForo />} />
          <Route path="/feed" element={<CreateFeed />} />
+         <Route path="/profile/:id" element={<Profile />} />
       </Route>
       </>
     )

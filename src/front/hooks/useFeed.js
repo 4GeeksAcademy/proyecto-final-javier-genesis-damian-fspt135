@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { getForos } from "../../services/createForoService";
 import {getMyFollow} from "../../services/followService"
+import { getTagsFromUser } from "../../services/tagService";
 
 export const useFeed = () => {
 
     const [foros, setForos] = useState([]);
     const [followForos, setFollowForos] = useState([])
+    const [userTags, setUserTags] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [activeTag, setActiveTag] = useState("");
@@ -15,6 +17,7 @@ export const useFeed = () => {
     useEffect(() => {
         loadForos();
         loadFollowForos();
+        loadUserTags();
     }, []);
 
     const loadForos = async () => {
@@ -45,6 +48,20 @@ export const useFeed = () => {
     }
 };
 
+    const loadUserTags = async () => {
+    try {
+
+        const data = await getTagsFromUser(user?.id);
+
+        setUserTags(data);
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+};
+
     const allTags = [
         ...new Set(
             foros.flatMap((foro) => foro.tags ?? [])
@@ -64,19 +81,21 @@ export const useFeed = () => {
     });
 
     const myForos = foros
-        .filter((foro) => Number(foro.user_id) === Number(user?.id))
-        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    .filter((foro) => Number(foro.user_id) === Number(user?.id))
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-    return {
-  loading,
+return {
+    loading,
     search,
     setSearch,
     filteredForos,
     myForos,
     followForos,
+    userTags,
     loadFollowForos,
     allTags,
     activeTag,
     setActiveTag
 };
+
 };

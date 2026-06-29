@@ -1,5 +1,33 @@
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+export const getProfile = async (userId) => {
+
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+        `${BACKEND_URL}/api/profile/${userId}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.msg || "Error obteniendo el perfil"
+        );
+    }
+
+    return data;
+};
+
+
+
+
+
 export const updateProfile = async (userId, profileData) => {
   if (!userId) {
     throw new Error("El ID de usuario es obligatorio para actualizar el perfil.");

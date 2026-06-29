@@ -22,19 +22,19 @@ export const CreateFeed = () => {
         }
     }
 
-    const {
-        loading,
-        search,
-        setSearch,
-        myForos,
-        followForos,
-        filteredForos,
-        loadFollowForos,
-        allTags,
-        activeTag,
-        setActiveTag
-
-    } = useFeed();
+   const {
+    loading,
+    search,
+    setSearch,
+    myForos,
+    followForos,
+    userTags,
+    filteredForos,
+    loadFollowForos,
+    allTags,
+    activeTag,
+    setActiveTag
+} = useFeed();
 
     if (loading) {
         return (
@@ -153,7 +153,44 @@ export const CreateFeed = () => {
 
                 </div>
 
+                <div className="sidebar-card">
+
+    <h5>Mis Tags</h5>
+
+    {
+        userTags.length > 0 ? (
+
+            <div className="feed-tags">
+
+                {
+                    userTags.map((tagSelect) => (
+
+                        <span
+                            key={tagSelect.id}
+                            className="feed-tag"
+                        >
+                            {tagSelect.tag.title}
+                        </span>
+
+                    ))
+                }
+
+            </div>
+
+        ) : (
+
+            <p className="text-muted">
+                No has seleccionado tags todavía.
+            </p>
+
+        )
+    }
+
+</div>
+
             </aside>
+
+            
 
 
             <main className="feed-main">

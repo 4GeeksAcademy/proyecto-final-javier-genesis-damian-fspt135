@@ -63,3 +63,21 @@ export const selectTagFromForo = async (foroId, tagsId) => {
     throw err;
   }
 }
+
+export const getTagsFromUser = async (userId) => {
+
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+        `${BACKEND_URL}/api/tag/user/${userId}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    const data = await response.json();
+
+    return data.tags;
+};
