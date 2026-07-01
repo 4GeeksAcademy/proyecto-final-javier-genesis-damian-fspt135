@@ -20,6 +20,32 @@ export const getTags = async (dispatch) => {
   }
 };
 
+export const getTagsUser = async (dispatch) =>{
+  try{
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    
+    const res = await fetch(`${BACKEND_URL}/api/tag/user`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      }
+    });
+
+    const data = await res.json();
+
+    dispatch({
+      type: "get_tags_user",
+      payload: data.tags || []}); 
+      return data
+  }catch (err) {
+    console.error("Error to get tags user", err);
+    throw err;
+  }
+
+}
+
 export const selectTagFromUser = async (selectTags) => {
   try {
     const token = localStorage.getItem("token");

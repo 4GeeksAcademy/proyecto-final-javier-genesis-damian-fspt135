@@ -72,11 +72,12 @@ export const Navbar = () => {
                         </li>
 
                         <li>
-                            <button
+                            <Link
                                 className="dropdown-item"
+                                to="/tags"
                             >
                                 Tags
-                            </button>
+                            </Link>
                         </li>
 
                         <li>

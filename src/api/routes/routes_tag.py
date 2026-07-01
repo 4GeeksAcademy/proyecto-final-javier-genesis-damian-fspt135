@@ -52,18 +52,25 @@ def select_tag():
 
     if tags_id is None:
         return jsonify({"msg": "Bad request i need tag_id"}), 400
-    
-    for tag in tags_id:
 
+    db.session.query(Tag_select).filter(Tag_select.user_id == user_id).delete()
+
+    new_tag_select = None
+
+    for tag in tags_id:
         tag_exists = db.session.get(Tag, tag)
         if tag_exists is None:
+            db.session.rollback()
             return jsonify({"msg": "Tag not found"}), 404
         
         new_tag_select = Tag_select(tag_id=tag, user_id=user_id)
         db.session.add(new_tag_select)
     db.session.commit()
+    response_data = {"msg": "Tags updated"}
+    if new_tag_select:
+        response_data["Tag_select"] = new_tag_select.serialize_tag_user()
 
-    return jsonify({"msg": "Tag assigned", "Tag_select":new_tag_select.serialize_tag_user()}), 201
+    return jsonify(response_data), 201
 
 @api.route('/tag-select-foro', methods=["POST"])
 @jwt_required()
@@ -90,9 +97,10 @@ def select_tagForo():
 
     return jsonify({"msg": "Tag assigned", "Tag_select":new_tag_select.serialize_tag_foro()}), 201
     
-@api.route('/tag/user/<int:user_id>', methods=['GET'])
+@api.route('/tag/user', methods=['GET'])
 @jwt_required()
-def get_tag_from_user(user_id):
+def get_tag_from_user():
+    user_id = get_jwt_identity()
     user = db.session.get(User, user_id)
     if user is None:
         return jsonify({"msg": "User not found"}), 400
