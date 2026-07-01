@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { getForos } from "../../services/createForoService";
+import { getForos } from "../../services/foroService";
 import { getMyFollow } from "../../services/followService";
 import { getTagsFromUser } from "../../services/tagService";
+import {getMyFollow} from "../../services/followService"
 
 export const useFeed = () => {
 

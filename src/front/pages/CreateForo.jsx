@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useCreateForo } from "../hooks/useCreateForo";
+import { useCreateForo } from "../hooks/Hooks_foro/useCreateForo.js";
 import { BodyTag } from "../components/BodyTag.jsx";
 import { useTag } from "../hooks/useTag.js";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
@@ -23,11 +23,11 @@ export const CreateForo = () => {
   } = useCreateForo();
 
 
-  const {getDataTag, onSelectedTag, handleSaveForo} = useTag();
+  const { getDataTag, onSelectedTag, handleSaveForo, selectedTag } = useTag();
 
-  useEffect(()=>{
-          getDataTag();
-      },[]);
+  useEffect(() => {
+    getDataTag();
+  }, []);
 
   // const [likeCount, setLikeCount] = useState(0);
 
@@ -35,16 +35,16 @@ export const CreateForo = () => {
   //   setLikeCount((prev) => prev + 1);
   // };
 
-  const saveForo= async (e) => {
-        e.preventDefault()
-        try {
-            const res = await handleCreateForo();
-            const foroId = res.forum.id;
-            await handleSaveForo(foroId);
-        }catch (err) {
-    console.error("Error to save foro", err);
-  }
+  const saveForo = async (e) => {
+    e.preventDefault()
+    try {
+      const res = await handleCreateForo();
+      const foroId = res.forum.id;
+      await handleSaveForo(foroId);
+    } catch (err) {
+      console.error("Error to save foro", err);
     }
+  }
 
 
   return (
@@ -144,11 +144,13 @@ export const CreateForo = () => {
 
 
         <div>
-          <label className="form-label fw-bold" >Selecciona tus gustos</label>
-          <div className="d-flex flex-wrap gap-2 border p-3 rounded bg-light">
-            {store.tags && store.tags.map((tag) =>
-              <BodyTag key={tag.id} tag={tag} onSelectedTag={onSelectedTag} />
-            )}
+          <label className="form-label fw-bold" >Selecciona las Tags del Foro</label>
+          <div className="d-flex flex-wrap gap-2 border p-3 rounded bg-light overflow-y-auto"
+            style={{ maxHeight: "200px" }}>
+            {store.tags && store.tags.map((tag) => {
+              const handleSelected = selectedTag.includes(tag.id);
+              return (<BodyTag key={tag.id} tag={tag} onSelectedTag={onSelectedTag} isSelected={handleSelected} />);
+            })}
           </div>
         </div>
 
