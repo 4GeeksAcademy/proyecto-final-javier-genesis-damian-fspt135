@@ -210,7 +210,7 @@ padding: 30px;
 
 @media (max-width: 992px) {
 
-```
+
 .feed-page {
     flex-direction: column;
 }
@@ -228,9 +228,7 @@ padding: 30px;
 .carousel-foro-image {
     height: 250px;
 }
-```
 
-}
 
 
 @media (max-width: 768px) {
@@ -276,4 +274,36 @@ padding: 30px;
     .carousel-caption p {
         font-size: 0.9rem;
     }
+}
+
+.empty-search-card{
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 60px 40px;
+
+    text-align: center;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow:
+        0 10px 30px rgba(15,23,42,.05);
+
+    margin-top: 20px;
+}
+
+.empty-search-card h3{
+    color: #0f172a;
+    font-size: 1.7rem;
+    font-weight: 800;
+
+    margin-bottom: 12px;
+}
+
+.empty-search-card p{
+    color: #64748b;
+    font-size: 1rem;
+
+    margin: 0;
 }

@@ -72,6 +72,18 @@ def get_forum_id(forum_id):
     ), 200
 
 
+@api.route("/foro/user/<int:user_id>", methods=["GET"])
+def get_foros_from_user(user_id):
+
+    foros = Foro.query.filter_by(
+        user_id=user_id
+    ).all()
+
+    return jsonify([
+        foro.serialize_foro()
+        for foro in foros
+    ]), 200
+
 @api.route("/foros/search", methods=["GET"])
 def get_forum_search():
 

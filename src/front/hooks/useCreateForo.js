@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createForo } from "../../services/createForoService"; 
+import { createForo } from "../../services/createForoService";
 
 export const useCreateForo = () => {
   const navigate = useNavigate();
@@ -15,10 +15,10 @@ export const useCreateForo = () => {
 
   const handleCreateForo = async (e) => {
     if (e) e.preventDefault();
-    
+
     setError("");
     setSuccess(false);
-    
+
     if (!title.trim()) {
       setError("El título del foro es obligatorio.");
       return;
@@ -27,17 +27,17 @@ export const useCreateForo = () => {
     setLoading(true);
 
     try {
-      const foroData = { 
-        title, 
+      const foroData = {
+        title,
         img,
-        description 
+        description,
       };
-      
+
       const data = await createForo(foroData);
-      
+
       setSuccess(true);
       return data;
-      
+
       setTitle("");
       setImg("");
       setDescription("");
@@ -45,7 +45,6 @@ export const useCreateForo = () => {
       setTimeout(() => {
         navigate("/");
       }, 1500);
-
     } catch (err) {
       setError(err.message || "Ocurrió un error al intentar crear el foro.");
     } finally {
@@ -63,6 +62,6 @@ export const useCreateForo = () => {
     error,
     loading,
     success,
-    handleCreateForo
+    handleCreateForo,
   };
 };

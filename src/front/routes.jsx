@@ -30,6 +30,7 @@ export const router = createBrowserRouter(
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/data-profile" element={<DataProfile />} />
         <Route path="/create-foro" element={<CreateForo />} />
+        <Route path="/create-post/:forumId" element={<CreacionPost/>} />
          <Route path="/feed" element={<CreateFeed />} />
          <Route path="/profile/:id" element={<Profile />} />
       </Route>

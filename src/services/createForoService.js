@@ -79,3 +79,44 @@ export const getForoById = async (foroId) => {
     throw error;
   }
 };
+
+export const getForosFromUser = async (userId) => {
+    try {
+
+        const response = await fetch(
+            `${BACKEND_URL}/api/foro/user/${userId}`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.msg || "Error obteniendo foros del usuario"
+            );
+        }
+
+        return data;
+
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const searchForos = async (query) => {
+  try {
+    const response = await fetch(
+      `${BACKEND_URL}/api/foros/search?query=${query}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.msg || "Error buscando foros");
+    }
+
+    return data;
+
+  } catch (error) {
+    throw error;
+  }
+};

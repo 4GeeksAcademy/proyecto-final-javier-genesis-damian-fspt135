@@ -1,15 +1,44 @@
 import "../../css/profile.css";
 import { FaEdit } from "react-icons/fa";
 import { useProfileView } from "../hooks/useProfileView";
+import { useEffect } from "react";
+import { useTag } from "../hooks/useTag";
+import { BodyTag } from "../components/BodyTag";
+import { deleteTagFromUser } from "../../services/tagService";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+
 
 export const Profile = () => {
 
+  const {
+    profile,
+    followForos,
+    myForos,
+    userTags,
+    setUserTags,
+    loading,
+    editingSection,
+    setEditingSection,
+    handleUnfollow,
+    selectedImage,
+    setSelectedImage,
+    handleUpdateAvatar
+} = useProfileView();
+
+    const { store } = useGlobalReducer();
+
+
     const {
-        profile,
-        followForos,
-        userTags,
-        loading
-    } = useProfileView();
+        getDataTag,
+        onSelectedTag,
+        handleSave,
+        selectedTag,
+        setSelectedTag,
+    } = useTag();
+
+    useEffect(() => {
+        getDataTag();
+    }, []);
 
     if (loading) {
         return (
@@ -20,11 +49,9 @@ export const Profile = () => {
     }
 
     return (
-
         <div className="profile-page">
 
             {/* IZQUIERDA */}
-
             <div className="profile-left">
 
                 <div className="profile-avatar-card">
@@ -35,9 +62,38 @@ export const Profile = () => {
                         className="profile-avatar"
                     />
 
-                    <button className="edit-btn">
+                    <button
+                        className="edit-btn"
+                        onClick={() => setEditingSection("avatar")}
+                    >
                         <FaEdit />
                     </button>
+
+                    {
+                        editingSection === "avatar" && (
+                            <div className="mt-3">
+
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                        setSelectedImage(
+                                            e.target.files[0]
+                                        )
+                                    }
+                                />
+
+                                <button
+                                    className="btn btn-primary mt-2"
+                                    onClick={handleUpdateAvatar}
+                                >
+                                    Guardar imagen
+                                </button>
+
+                            </div>
+                        )
+                    }
 
                     <h3 className="mt-3">
                         {profile?.first_name} {profile?.last_name}
@@ -50,23 +106,30 @@ export const Profile = () => {
                     <div className="card-header-profile">
                         <h4>Foros Seguidos</h4>
 
-                        <button className="edit-btn-small">
+                        <button
+                            className="edit-btn-small"
+                            onClick={() =>
+                                setEditingSection(
+                                    editingSection === "follow"
+                                        ? null
+                                        : "follow"
+                                )
+                            }
+                        >
                             <FaEdit />
                         </button>
                     </div>
 
                     <div className="follow-list">
 
-                        {
-                            followForos.length > 0 ? (
+                        {followForos.length > 0 ? (
+                            followForos.map((foro) => (
+                                <div
+                                    key={foro.id}
+                                    className="follow-item"
+                                >
 
-                                followForos.map((foro) => (
-
-                                    <div
-                                        key={foro.id}
-                                        className="follow-item"
-                                    >
-
+                                    <div className="follow-content">
                                         <img
                                             src={foro.img}
                                             alt={foro.title}
@@ -76,27 +139,74 @@ export const Profile = () => {
                                         <span className="follow-title">
                                             {foro.title}
                                         </span>
-
                                     </div>
 
+                                    {editingSection === "follow" && (
+                                        <button
+                                            className="unfollow-btn"
+                                            onClick={() => handleUnfollow(foro.id)}
+                                        >
+                                            Dejar de seguir
+                                        </button>
+                                    )}
+
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-muted">
+                                No sigues ningún foro todavía.
+                            </p>
+                        )}
+
+                    </div>
+
+                </div>
+
+                <div className="profile-follow-card">
+
+                    <div className="card-header-profile">
+                        <h4>Mis foros creados</h4>
+                    </div>
+
+                    <div className="follow-list">
+
+                        {
+                            myForos?.length > 0 ? (
+                                myForos.map((foro) => (
+                                    <div
+                                        key={foro.id}
+                                        className="follow-item"
+                                    >
+
+                                        <div className="follow-content">
+                                            <img
+                                                src={foro.img}
+                                                alt={foro.title}
+                                                className="follow-image"
+                                            />
+
+                                            <span className="follow-title">
+                                                {foro.title}
+                                            </span>
+                                        </div>
+
+                                    </div>
                                 ))
-
                             ) : (
-
                                 <p className="text-muted">
-                                    No sigues ningún foro todavía.
+                                    Todavía no has creado ningún foro.
                                 </p>
-
                             )
                         }
 
                     </div>
+
                 </div>
 
             </div>
 
-            {/* DERECHA */}
 
+            {/* DERECHA */}
             <div className="profile-right">
 
                 <div className="profile-data-card">
@@ -105,7 +215,10 @@ export const Profile = () => {
 
                         <h3>Información del usuario</h3>
 
-                        <button className="edit-btn-small">
+                        <button
+                            className="edit-btn-small"
+                            onClick={() => setEditingSection("info")}
+                        >
                             <FaEdit />
                         </button>
 
@@ -115,35 +228,103 @@ export const Profile = () => {
 
                         <div className="info-item">
                             <span>Nombre</span>
-                            <p>{profile?.first_name}</p>
+                            {
+                                editingSection === "info" ? (
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        defaultValue={profile?.first_name}
+                                    />
+                                ) : (
+                                    <p>{profile?.first_name}</p>
+                                )
+                            }
                         </div>
 
                         <div className="info-item">
                             <span>Apellido</span>
-                            <p>{profile?.last_name}</p>
+                            {
+                                editingSection === "info" ? (
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        defaultValue={profile?.last_name}
+                                    />
+                                ) : (
+                                    <p>{profile?.last_name}</p>
+                                )
+                            }
                         </div>
 
                         <div className="info-item">
                             <span>Usuario</span>
-                            <p>@{profile?.username}</p>
+                            {
+                                editingSection === "info" ? (
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        defaultValue={profile?.username}
+                                    />
+                                ) : (
+                                    <p>@{profile?.username}</p>
+                                )
+                            }
                         </div>
 
                         <div className="info-item">
                             <span>Email</span>
-                            <p>{profile?.email}</p>
+                            {
+                                editingSection === "info" ? (
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        defaultValue={profile?.email}
+                                    />
+                                ) : (
+                                    <p>{profile?.email}</p>
+                                )
+                            }
                         </div>
 
                         <div className="info-item">
                             <span>Fecha de nacimiento</span>
-                            <p>{profile?.date_birth || "No especificada"}</p>
+                            {
+                                editingSection === "info" ? (
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        defaultValue={profile?.date_birth}
+                                    />
+                                ) : (
+                                    <p>{profile?.date_birth || "No especificada"}</p>
+                                )
+                            }
                         </div>
 
                         <div className="info-item">
                             <span>Descripción</span>
-                            <p>
-                                {profile?.description || "Sin descripción"}
-                            </p>
+                            {
+                                editingSection === "info" ? (
+                                    <textarea
+                                        className="form-control"
+                                        defaultValue={profile?.description}
+                                    />
+                                ) : (
+                                    <p>{profile?.description || "Sin descripción"}</p>
+                                )
+                            }
                         </div>
+
+                        {
+                            editingSection === "info" && (
+                                <button
+                                    className="btn btn-primary mt-3"
+                                    onClick={() => setEditingSection(null)}
+                                >
+                                    Guardar cambios
+                                </button>
+                            )
+                        }
 
                     </div>
 
@@ -155,48 +336,124 @@ export const Profile = () => {
 
                         <h3>Tags de gustos</h3>
 
-                        <button className="edit-btn-small">
+                        <button
+                            className="edit-btn-small"
+                            onClick={() => setEditingSection("tags")}
+                        >
                             <FaEdit />
                         </button>
 
                     </div>
 
+
+
                     <div className="tag-container">
 
-                        <div className="tag-container">
+                        {
+                            userTags.length > 0 ? (
+                                userTags.map((tagSelect) => (
+                                    <div
+                                        key={tagSelect.id}
+                                        className="tag-item-profile"
+                                    >
+                                        <span>{tagSelect.tag.title}</span>
 
-                            {
-                                userTags.length > 0 ? (
+                                        {
+                                            editingSection === "tags" && (
+                                                <button
+                                                    className="remove-tag-btn"
+                                                    onClick={async () => {
+                                                        await deleteTagFromUser(tagSelect.tag.id);
+                                                        setUserTags(
+                                                            userTags.filter(
+                                                                tag => tag.tag.id !== tagSelect.tag.id
+                                                            )
+                                                        );
+                                                    }}
+                                                >
+                                                    ×
+                                                </button>
+                                            )
+                                        }
 
-                                    userTags.map((tagSelect) => (
-
-                                        <div
-                                            key={tagSelect.id}
-                                            className="tag-item"
-                                        >
-                                            {tagSelect.tag.title}
-                                        </div>
-
-                                    ))
-
-                                ) : (
-
-                                    <p className="text-muted">
-                                        No hay gustos seleccionados.
-                                    </p>
-
-                                )
-                            }
-
-                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-muted">
+                                    No hay gustos seleccionados.
+                                </p>
+                            )
+                        }
 
                     </div>
 
-                </div>
+                    {
+                        editingSection === "tags" && (
+                            <>
+                                <hr />
 
+                                <h5 className="mb-3">
+                                    Añadir o eliminar tags
+                                </h5>
+
+                                <div className="d-flex flex-wrap gap-2">
+
+                                    {
+                                        store.tags
+                                            ?.filter(
+                                                tag =>
+                                                    !userTags.some(
+                                                        userTag => userTag.tag.id === tag.id
+                                                    )
+                                            )
+                                            .map((tag) => (
+                                                <BodyTag
+                                                    key={tag.id}
+                                                    tag={tag}
+                                                    onSelectedTag={onSelectedTag}
+                                                    isSelected={selectedTag.includes(tag.id)}
+                                                />
+                                            ))
+                                    }
+
+                                </div>
+
+                                <button
+                                    className="btn btn-success mt-3"
+                                    onClick={async () => {
+
+                                        await handleSave();
+
+                                        const nuevosTags = store.tags
+                                            .filter(tag => selectedTag.includes(tag.id))
+                                            .filter(tag =>
+                                                !userTags.some(
+                                                    userTag => userTag.tag.id === tag.id
+                                                )
+                                            )
+                                            .map(tag => ({
+                                                id: tag.id,
+                                                tag: tag
+                                            }));
+
+                                        setUserTags([
+                                            ...userTags,
+                                            ...nuevosTags
+                                        ]);
+
+                                        setSelectedTag([]);
+
+                                    }}
+                                >
+                                    Guardar cambios
+                                </button>
+                            </>
+                        )
+                    }
+
+                </div>
             </div>
 
-        </div>
-
+        </div> 
     );
 };
