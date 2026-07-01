@@ -13,7 +13,8 @@ import { DataProfile } from "./pages/DataProfile"
 import { CreateForo } from "./pages/CreateForo";
 import { Feed } from "./pages/Feed";
 import { AllForos } from "./pages/AllForos";
-import { AllTags } from "./pages/AllTags";
+import { AllTags } from "./pages/AllTags";import { PostView } from "./pages/PostView";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,7 @@ export const router = createBrowserRouter(
         <Route path="/feed" element={<Feed />} />
         <Route path="/foros" element={<AllForos/>}/>
         <Route path="/tags" element={<AllTags/>}/>
+        <Route path="/post/:post_id" element={<PostView />} />
       </Route>
     </>
   )
