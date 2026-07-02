@@ -20,7 +20,7 @@ class User(db.Model):
     is_active: Mapped[bool] = mapped_column(Boolean(), default=True)
     foro = relationship('Foro')
     following = relationship("Follow", cascade="all, delete-orphan")
-    post = relationship('Post')
+    post = relationship('Post', back_populates="user")
     tag = relationship('Tag_select')
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())

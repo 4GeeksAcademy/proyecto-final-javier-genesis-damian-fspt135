@@ -12,12 +12,24 @@ export const createPost = async (formData, token) => {
     return await response.json();
 };
 
-export const getPostsForum = async (forumId) => {
-    const response = await fetch(
-        `${BASE_URL}/api/foro/${forumId}/posts`
-    );
-
-    return await response.json();
+export const getPostsByForo = async (foroId) => {
+    const token = localStorage.getItem("token");
+    try{
+        const response = await fetch(`${BASE_URL}/foro/${foroId}/posts`,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || "Error al obtener comentarios");
+        }
+        return data;
+    }catch (error) {
+        throw error;
+    }
 };
 
 export const getTopPosts = async (forumId) => {
@@ -35,3 +47,24 @@ export const getPostById = async (postId) => {
 
     return await response.json();
 };
+
+export const editPost = async (postId, content) =>{
+    const token = localStorage.getItem("token");
+    try{
+        const response = await fetch(`${BASE_URL}/api/post/${postId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ content })
+        });
+         const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || "Error al editar el post");
+        }
+        return data;
+    }catch (error) {
+        throw error;
+    }
+}

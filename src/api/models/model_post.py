@@ -13,6 +13,7 @@ class Post (db.Model):
     content: Mapped[str] = mapped_column(String(255),nullable=False)
     img: Mapped[str] = mapped_column(Text,nullable=True)
     user_id = mapped_column(ForeignKey("user.id"), nullable=False)
+    user = relationship('User', back_populates="post")
     foro_id: Mapped[int] = mapped_column(ForeignKey("foro.id"), nullable=True)
     foro = relationship("Foro", back_populates="post")
     comment = relationship('Comment')
@@ -29,6 +30,6 @@ class Post (db.Model):
         "user_id": self.user_id,
         "foro_id": self.foro_id,
         "created_at": self.created_at.isoformat() if self.created_at else None,
-        "updated_at": self.updated_at.isoformat() if self.updated_at else None
-        
+        "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+        "user": {"name":self.user.username, "img_user": self.user.img}
     }
