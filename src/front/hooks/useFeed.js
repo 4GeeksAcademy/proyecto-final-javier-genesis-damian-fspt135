@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { getForos } from "../../services/foroService";
 import { getMyFollow } from "../../services/followService";
 import { getTagsFromUser } from "../../services/tagService";
 
 export const useFeed = () => {
   const location = useLocation();
-
+  const { dispatch } = useGlobalReducer();
   const queryParams = new URLSearchParams(location.search);
 
   const searchFromUrl = queryParams.get("search") || "";
@@ -31,9 +31,11 @@ export const useFeed = () => {
       const data = await getForos();
 
       console.log("FOROS:", data);
-
+      dispatch({
+        type: "all_foros",
+        payload: data,
+      });
       setForos(data);
-      
     } catch (error) {
       console.log(error);
     } finally {
