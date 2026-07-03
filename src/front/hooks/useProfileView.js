@@ -1,11 +1,25 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import { getProfile } from "../../services/profileService";
 import { getTagsFromUser } from "../../services/tagService";
 import { getMyFollow, unfollowForo } from "../../services/followService";
-import { getForosFromUser } from "../../services/createForoService";
+import { getForosFromUser } from "../../services/foroService";
 import { updateProfile } from "../../services/profileService";
+
+const normalizeUserTags = (rawTags) => {
+  if (!Array.isArray(rawTags)) return [];
+
+  return rawTags.map((item) => {
+    if (item && item.tag) {
+      return item;
+    }
+   
+    return {
+      id: item.id,
+      tag: item,
+    };
+  });
+};
 
 export const useProfileView = () => {
   const { id } = useParams();
@@ -30,7 +44,7 @@ export const useProfileView = () => {
       setProfile(data);
 
       const tags = await getTagsFromUser(id);
-      setUserTags(tags);
+      setUserTags(normalizeUserTags(tags));
 
       const follows = await getMyFollow();
       setFollowForos(follows);
@@ -38,7 +52,6 @@ export const useProfileView = () => {
       const createdForos = await getForosFromUser(id);
 
       setMyForos(createdForos);
-
     } catch (error) {
       console.log(error);
     } finally {
@@ -58,34 +71,60 @@ export const useProfileView = () => {
 
   const handleUpdateAvatar = async () => {
     try {
+      if (!selectedImage) return;
 
-        if (!selectedImage) return;
+      console.log(selectedImage);
 
-        console.log(selectedImage);
+      await updateProfile(id, {
+        firstName: profile.first_name,
+        lastName: profile.last_name,
+        birthDate: profile.date_birth,
+        description: profile.description,
+        profileImg: selectedImage,
+      });
 
-        await updateProfile(id, {
-            firstName: profile.first_name,
-            lastName: profile.last_name,
-            birthDate: profile.date_birth,
-            description: profile.description,
-            profileImg: selectedImage
-        });
+      await loadProfile();
 
-        await loadProfile();
-
-        setEditingSection(null);
-
+      setEditingSection(null);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-};
+  };
 
+  const handleUpdateProfile = async () => {
+    try {
+      await updateProfile(id, {
+        firstName: profile.first_name,
+        lastName: profile.last_name,
+        username: profile.username,
+        email: profile.email,
+        birthDate: profile.date_birth,
+        description: profile.description,
+        profileImg: null,
+      });
 
+      await loadProfile();
 
-return {
+      setEditingSection(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleProfileChange = (field, value) => {
+    setProfile((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  return {
     profile,
+    setProfile,
+    handleProfileChange,
     loading,
     userTags,
+    setUserTags,
     followForos,
     myForos,
     editingSection,
@@ -94,6 +133,7 @@ return {
     loadProfile,
     selectedImage,
     setSelectedImage,
-    handleUpdateAvatar
-};
+    handleUpdateAvatar,
+    handleUpdateProfile,
+  };
 };

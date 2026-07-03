@@ -10,20 +10,23 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const Profile = () => {
 
-  const {
-    profile,
-    followForos,
-    myForos,
-    userTags,
-    setUserTags,
-    loading,
-    editingSection,
-    setEditingSection,
-    handleUnfollow,
-    selectedImage,
-    setSelectedImage,
-    handleUpdateAvatar
-} = useProfileView();
+    const {
+        profile,
+        setProfile,
+        handleProfileChange,
+        followForos,
+        myForos,
+        userTags,
+        setUserTags,
+        loading,
+        editingSection,
+        setEditingSection,
+        handleUnfollow,
+        selectedImage,
+        setSelectedImage,
+        handleUpdateAvatar,
+        handleUpdateProfile
+    } = useProfileView();
 
     const { store } = useGlobalReducer();
 
@@ -224,109 +227,138 @@ export const Profile = () => {
 
                     </div>
 
-                    <div className="profile-info">
-
-                        <div className="info-item">
-                            <span>Nombre</span>
-                            {
-                                editingSection === "info" ? (
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        defaultValue={profile?.first_name}
-                                    />
-                                ) : (
-                                    <p>{profile?.first_name}</p>
-                                )
-                            }
-                        </div>
-
-                        <div className="info-item">
-                            <span>Apellido</span>
-                            {
-                                editingSection === "info" ? (
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        defaultValue={profile?.last_name}
-                                    />
-                                ) : (
-                                    <p>{profile?.last_name}</p>
-                                )
-                            }
-                        </div>
-
-                        <div className="info-item">
-                            <span>Usuario</span>
-                            {
-                                editingSection === "info" ? (
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        defaultValue={profile?.username}
-                                    />
-                                ) : (
-                                    <p>@{profile?.username}</p>
-                                )
-                            }
-                        </div>
-
-                        <div className="info-item">
-                            <span>Email</span>
-                            {
-                                editingSection === "info" ? (
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        defaultValue={profile?.email}
-                                    />
-                                ) : (
-                                    <p>{profile?.email}</p>
-                                )
-                            }
-                        </div>
-
-                        <div className="info-item">
-                            <span>Fecha de nacimiento</span>
-                            {
-                                editingSection === "info" ? (
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        defaultValue={profile?.date_birth}
-                                    />
-                                ) : (
-                                    <p>{profile?.date_birth || "No especificada"}</p>
-                                )
-                            }
-                        </div>
-
-                        <div className="info-item">
-                            <span>Descripción</span>
-                            {
-                                editingSection === "info" ? (
-                                    <textarea
-                                        className="form-control"
-                                        defaultValue={profile?.description}
-                                    />
-                                ) : (
-                                    <p>{profile?.description || "Sin descripción"}</p>
-                                )
-                            }
-                        </div>
+                    <div className="info-item">
+                        <span>Nombre</span>
 
                         {
-                            editingSection === "info" && (
-                                <button
-                                    className="btn btn-primary mt-3"
-                                    onClick={() => setEditingSection(null)}
-                                >
-                                    Guardar cambios
-                                </button>
+                            editingSection === "info" ? (
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={profile?.first_name || ""}
+                                    onChange={(e) =>
+                                        setProfile({
+                                            ...profile,
+                                            first_name: e.target.value
+                                        })
+                                    }
+                                />
+                            ) : (
+                                <p>{profile?.first_name}</p>
                             )
                         }
-
                     </div>
+
+                    <div className="info-item">
+                        <span>Apellido</span>
+
+                        {
+                            editingSection === "info" ? (
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={profile?.last_name || ""}
+                                    onChange={(e) =>
+                                        setProfile({
+                                            ...profile,
+                                            last_name: e.target.value
+                                        })
+                                    }
+                                />
+                            ) : (
+                                <p>{profile?.last_name}</p>
+                            )
+                        }
+                    </div>
+
+                    <div className="info-item">
+                        <span>Usuario</span>
+                        {
+                            editingSection === "info" ? (
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={profile?.username || ""}
+                                    onChange={(e) =>
+                                        setProfile({
+                                            ...profile,
+                                            username: e.target.value
+                                        })
+                                    }
+                                />
+                            ) : (
+                                <p>@{profile?.username}</p>
+                            )
+                        }
+                    </div>
+
+                    <div className="info-item">
+                        <span>Email</span>
+                        {
+                            editingSection === "info" ? (
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    defaultValue={profile?.email}
+                                />
+                            ) : (
+                                <p>{profile?.email}</p>
+                            )
+                        }
+                    </div>
+
+                    <div className="info-item">
+                        <span>Fecha de nacimiento</span>
+                        {
+                            editingSection === "info" ? (
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={profile?.date_birth || ""}
+                                    onChange={(e) =>
+                                        setProfile({
+                                            ...profile,
+                                            date_birth: e.target.value
+                                        })
+                                    }
+                                />
+                            ) : (
+                                <p>{profile?.date_birth || "No especificada"}</p>
+                            )
+                        }
+                    </div>
+
+                    <div className="info-item">
+                        <span>Descripción</span>
+                        {
+                            editingSection === "info" ? (
+                                <textarea
+                                    className="form-control"
+                                    value={profile?.description || ""}
+                                    onChange={(e) =>
+                                        setProfile({
+                                            ...profile,
+                                            description: e.target.value
+                                        })
+                                    }
+                                />
+                            ) : (
+                                <p>{profile?.description || "Sin descripción"}</p>
+                            )
+                        }
+                    </div>
+
+                    {
+                        editingSection === "info" && (
+                            <button
+                                className="btn btn-primary mt-3"
+                                onClick={handleUpdateProfile}
+                            >
+                                Guardar cambios
+                            </button>
+                        )
+                    }
+
 
                 </div>
 
@@ -453,7 +485,8 @@ export const Profile = () => {
 
                 </div>
             </div>
+        </div>
 
-        </div> 
+
     );
 };

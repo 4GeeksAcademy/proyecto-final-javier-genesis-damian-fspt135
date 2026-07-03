@@ -38,28 +38,31 @@ export const createForo = async (foroData) => {
   }
 };
 
-export const getForos = async (dispatch) => {
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/foros`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.msg || "Error al obtener los foros");
-    }
-    dispatch({
-      type:"all_foros",
-      payload: data
-    });
+export const getForos = async () => {
+    try {
+        const response = await fetch(
+            `${BACKEND_URL}/api/foros`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        );
 
-    return data;
-  } catch (error) {
-    throw error;
-  }
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.msg || "Error al obtener los foros"
+            );
+        }
+
+        return data;
+
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const getForoById = async (foroId) => {

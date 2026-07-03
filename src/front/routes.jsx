@@ -36,6 +36,7 @@ export const router = createBrowserRouter(
         <Route path="/feed" element={<Feed />} />
         <Route path="/foros" element={<AllForos/>}/>
         <Route path="/post/:post_id" element={<PostView />} />
+        <Route path="/profile/:id" element={<Profile />} />
       </Route>
     </>
   )
