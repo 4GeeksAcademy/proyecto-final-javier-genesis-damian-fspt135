@@ -82,3 +82,30 @@ export const getForoById = async (foroId) => {
     throw error;
   }
 };
+
+export const updateForo = async (foroId, foroData) => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No se encontró el token de autorización.");
+ 
+  const formData = new FormData();
+  if (foroData.title) formData.append("title", foroData.title);
+  if (foroData.description) formData.append("description", foroData.description);
+  if (foroData.img instanceof File) formData.append("img", foroData.img);
+ 
+  const response = await fetch(`${BACKEND_URL}/api/foro/${foroId}`, {
+    method: "PUT",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    },
+    body: formData
+  });
+ 
+  const textData = await response.text();
+  const data = textData ? JSON.parse(textData) : {};
+ 
+  if (!response.ok) {
+    throw new Error(data.msg || `Error al editar el foro (Estado: ${response.status})`);
+  }
+ 
+  return data;
+};
