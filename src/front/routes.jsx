@@ -13,8 +13,8 @@ import { DataProfile } from "./pages/DataProfile"
 import { CreateForo } from "./pages/CreateForo";
 import { Feed } from "./pages/Feed";
 import { AllForos } from "./pages/AllForos";
-import { AllTags } from "./pages/AllTags";import { PostView } from "./pages/PostView";
-
+import { PostView } from "./pages/PostView";
+import { ForoPage } from "./pages/ForoPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,13 +29,13 @@ export const router = createBrowserRouter(
       <Route path="/" element={<Landing />} />
       <Route path="/register" element={<RegisterForm />} />
       <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
-        <Route path="/create-post" element={<CreacionPost />} />
         <Route path="/data-profile" element={<DataProfile />} />
         <Route path="/create-foro" element={<CreateForo />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/foros" element={<AllForos/>}/>
-        <Route path="/tags" element={<AllTags/>}/>
-        <Route path="/post/:post_id" element={<PostView />} />
+        <Route path="/foro/:foro_id" element={<ForoPage/>}/>
+        <Route path="/foro/:foro_id/create-post" element={<CreacionPost />}/>
+        <Route path="/foro/:foro_id/post/:post_id" element={<PostView />} />
       </Route>
     </>
   )

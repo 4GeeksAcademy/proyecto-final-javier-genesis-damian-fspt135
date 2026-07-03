@@ -72,15 +72,6 @@ export const Navbar = () => {
                         </li>
 
                         <li>
-                            <Link
-                                className="dropdown-item"
-                                to="/tags"
-                            >
-                                Tags
-                            </Link>
-                        </li>
-
-                        <li>
                             <button
                                 className="dropdown-item"
                             >

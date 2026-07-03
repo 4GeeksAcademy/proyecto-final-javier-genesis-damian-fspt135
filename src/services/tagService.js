@@ -7,63 +7,46 @@ export const getTags = async (dispatch) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     const data = await res.json();
     dispatch({
       type: "all_tags",
-      payload: data.tag
+      payload: data.tag,
     });
   } catch (err) {
     console.error("Error to get tags", err);
   }
 };
 
-export const getTagsUser = async (dispatch) =>{
-  try{
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    
-    const res = await fetch(`${BACKEND_URL}/api/tag/user`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      }
-    });
-
-    const data = await res.json();
-
-    dispatch({
-      type: "get_tags_user",
-      payload: data.tags || []}); 
-      return data
-  }catch (err) {
-    console.error("Error to get tags user", err);
-    throw err;
-  }
-
-}
-
 export const selectTagFromUser = async (selectTags) => {
   try {
     const token = localStorage.getItem("token");
+
     const res = await fetch(`${BACKEND_URL}/api/tag-select`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        tags_id: selectTags
-      })
+        tags_id: selectTags,
+      }),
     });
+
     const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.msg || "Error al guardar tags");
+    }
+
+    return data;
   } catch (err) {
     console.error("Error to get tags", err);
+    throw err;
   }
-}
+};
 
 export const selectTagFromForo = async (foroId, tagsId) => {
   try {
@@ -72,12 +55,12 @@ export const selectTagFromForo = async (foroId, tagsId) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         foro_id: foroId,
-        tags_id: tagsId
-      })
+        tags_id: tagsId,
+      }),
     });
     const data = await res.json();
     if (!res.ok) {
@@ -88,5 +71,42 @@ export const selectTagFromForo = async (foroId, tagsId) => {
     console.error("Error to get tags", err);
     throw err;
   }
-}
+};
 
+export const getTagsFromUser = async (userId) => {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${BACKEND_URL}/api/tag/user/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  return data.tags;
+};
+
+export const deleteTagFromUser = async (tagId) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${BACKEND_URL}/api/tag-select/${tagId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.msg || "Error eliminando tag");
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Error deleting tag", err);
+    throw err;
+  }
+};

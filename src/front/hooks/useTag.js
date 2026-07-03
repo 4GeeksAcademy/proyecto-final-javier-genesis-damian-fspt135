@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { getTags } from "../../services/tagService.js";
 import { useNavigate } from "react-router-dom";
-import { BsTags } from "react-icons/bs";
 import {
   selectTagFromUser,
   selectTagFromForo,
-  getTags,
-  getTagsUser,
+  deleteTagFromUser,
 } from "../../services/tagService.js";
+import { BsTags } from "react-icons/bs";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 export const useTag = () => {
@@ -14,32 +14,13 @@ export const useTag = () => {
   const [selectedTag, setSelectedTag] = useState([]);
   const [error, setError] = useState("");
 
-  const chargeTagsToCreateForo = async () => {
+  const getDataTag = async () => {
     try {
-      await getTags(dispatch)
-      dispatch({ type: 'get_tags_user', payload:[] });
-    }catch (err) {
-      setError(err.message || "Error al cargas tags");
+      const tagList = await getTags(dispatch);
+    } catch (err) {
+      setError(err.message || "Error en enlistar tags");
     }
-  }
-
-  const chargeTagsToUserSelect = async () => {
-    try{
-      await getTags(dispatch)
-      if (localStorage.getItem("token")) {
-           const res = await getTagsUser(dispatch);
-           if (res && res.tags){
-            
-            const idTags = res.tags.map(tag => tag.tag.id);
-            setSelectedTag(idTags);
-          }
-          }
-    }catch (err) {
-      setError(err.message || "Error al cargas tags");
-    }
-  }
-
-  
+  };
 
   const onSelectedTag = async (tag) => {
     try {
@@ -59,10 +40,15 @@ export const useTag = () => {
         setError("No hay tags seleccionadas");
         return;
       }
+
       console.log(selectedTag);
 
       const res = await selectTagFromUser(selectedTag);
+      
+
       console.log(res);
+
+      return res;
     } catch (err) {
       setError(err.message || "Error seleccionar tags");
     }
@@ -83,11 +69,11 @@ export const useTag = () => {
   };
 
   return {
+    getDataTag,
     onSelectedTag,
     handleSave,
     selectedTag,
+    setSelectedTag,
     handleSaveForo,
-    chargeTagsToCreateForo,
-    chargeTagsToUserSelect
   };
 };
