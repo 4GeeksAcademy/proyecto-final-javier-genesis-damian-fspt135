@@ -37,7 +37,6 @@ export const createForo = async (foroData) => {
   }
 };
 
-<<<<<<< HEAD
 export const getForos = async (dispatch) => {
    const token = localStorage.getItem("token");
   if (!token) {
@@ -60,19 +59,6 @@ export const getForos = async (dispatch) => {
       type:"all_foros",
       payload: data
     });
-=======
-export const getForos = async () => {
-    try {
-        const response = await fetch(
-            `${BACKEND_URL}/api/foros`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        );
->>>>>>> develop
 
         const data = await response.json();
 
