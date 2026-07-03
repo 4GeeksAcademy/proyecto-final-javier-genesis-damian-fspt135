@@ -10,7 +10,8 @@ import { Landing } from "./pages/Landing";
 import { CreacionPost } from "./pages/CreacionPost";
 import { RegisterForm } from "./pages/RegisterForm"
 import { DataProfile } from "./pages/DataProfile"
-import { CreateForo } from "./pages/CreateForo";
+import { CreateForo } from "./pages/CreateForo"
+import { Profile } from "./pages/Profile";
 import { Feed } from "./pages/Feed";
 import { AllForos } from "./pages/AllForos";
 import { PostView } from "./pages/PostView";
@@ -36,6 +37,7 @@ export const router = createBrowserRouter(
         <Route path="/foro/:foro_id" element={<ForoPage/>}/>
         <Route path="/foro/:foro_id/create-post" element={<CreacionPost />}/>
         <Route path="/foro/:foro_id/post/:post_id" element={<PostView />} />
+        <Route path="/profile/:id" element={<Profile />} />
       </Route>
     </>
   )

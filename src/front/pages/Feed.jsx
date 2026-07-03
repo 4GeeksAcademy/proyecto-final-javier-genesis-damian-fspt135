@@ -28,12 +28,12 @@ export const Feed = () => {
         setSearch,
         myForos,
         followForos,
+        userTags,
         filteredForos,
         loadFollowForos,
         allTags,
         activeTag,
         setActiveTag
-
     } = useFeed();
 
     if (loading) {
@@ -153,7 +153,44 @@ export const Feed = () => {
 
                 </div>
 
+                <div className="sidebar-card">
+
+                    <h5>Mis Tags</h5>
+
+                    {
+                        userTags.length > 0 ? (
+
+                            <div className="feed-tags">
+
+                                {
+                                    userTags.map((tagSelect) => (
+
+                                        <span
+                                            key={tagSelect.id}
+                                            className="feed-tag"
+                                        >
+                                            {tagSelect.tag.title}
+                                        </span>
+
+                                    ))
+                                }
+
+                            </div>
+
+                        ) : (
+
+                            <p className="text-muted">
+                                No has seleccionado tags todavía.
+                            </p>
+
+                        )
+                    }
+
+                </div>
+
             </aside>
+
+
 
 
             <main className="feed-main">
@@ -209,34 +246,53 @@ export const Feed = () => {
                 </div>
 
 
-                {filteredForos.map((foro) => (
+                {
+                    filteredForos.length > 0 ? (
 
-                    <div
-                        key={foro.id}
-                        className="feed-foro-card mb-3"
-                    >
+                        filteredForos.map((foro) => (
 
-                        <img
-                            src={foro.img}
-                            alt={foro.title}
-                            className="foro-card-image"
-                        />
+                            <div
+                                key={foro.id}
+                                className="feed-foro-card mb-3"
+                            >
 
-                        <h3>{foro.title}</h3>
+                                <img
+                                    src={foro.img}
+                                    alt={foro.title}
+                                    className="foro-card-image"
+                                />
 
-                        <p>{foro.description}</p>
+                                <h3>{foro.title}</h3>
 
-                        <button
-                            className="btn btn-primary"
-                            onClick={() => handleFollow(foro.id)}
-                        >
-                            Seguir
-                        </button>
+                                <p>{foro.description}</p>
 
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => handleFollow(foro.id)}
+                                >
+                                    Seguir
+                                </button>
 
-                    </div>
+                            </div>
 
-                ))}
+                        ))
+
+                    ) : (
+
+                        <div className="empty-search-card">
+
+                            <h3>
+                                🔍 No encontramos resultados
+                            </h3>
+
+                            <p>
+                                No existe ningún foro que coincida con tu búsqueda.
+                            </p>
+
+                        </div>
+
+                    )
+                }
 
             </main>
 

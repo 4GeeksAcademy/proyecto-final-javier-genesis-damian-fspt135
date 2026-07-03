@@ -37,6 +37,7 @@ export const createForo = async (foroData) => {
   }
 };
 
+<<<<<<< HEAD
 export const getForos = async (dispatch) => {
    const token = localStorage.getItem("token");
   if (!token) {
@@ -59,11 +60,33 @@ export const getForos = async (dispatch) => {
       type:"all_foros",
       payload: data
     });
+=======
+export const getForos = async () => {
+    try {
+        const response = await fetch(
+            `${BACKEND_URL}/api/foros`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+>>>>>>> develop
 
-    return data;
-  } catch (error) {
-    throw error;
-  }
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.msg || "Error al obtener los foros"
+            );
+        }
+
+        return data;
+
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const getForoById = async (foroId) => {
@@ -87,6 +110,47 @@ export const getForoById = async (foroId) => {
     }
 
     return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getForosFromUser = async (userId) => {
+    try {
+
+        const response = await fetch(
+            `${BACKEND_URL}/api/foro/user/${userId}`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.msg || "Error obteniendo foros del usuario"
+            );
+        }
+
+        return data;
+
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const searchForos = async (query) => {
+  try {
+    const response = await fetch(
+      `${BACKEND_URL}/api/foros/search?query=${query}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.msg || "Error buscando foros");
+    }
+
+    return data;
+
   } catch (error) {
     throw error;
   }
