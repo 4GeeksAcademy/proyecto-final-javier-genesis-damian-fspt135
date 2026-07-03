@@ -12,8 +12,6 @@ export const AllForos = () => {
     const { getDataForo } = useForo();
 
     useEffect(() => {
-        console.log("estoy en los foros");
-        
         getDataForo();
     }, []);
 
@@ -29,9 +27,10 @@ export const AllForos = () => {
                                     <CardForoSimply key={foro.id} foro={foro} img={foro?.img} title={foro?.title} description={foro?.description} />
                                 </div>
                                 <div className="text-center mt-3">
-                                    <button className="btn btn-primary w-40 fw-bold shadow-sm py-2 m-2">
+                                    <Link className="btn btn-primary w-40 fw-bold shadow-sm py-2 m-2"
+                                    to={`/foro/${foro.id}`}>
                                         Entrar
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>)

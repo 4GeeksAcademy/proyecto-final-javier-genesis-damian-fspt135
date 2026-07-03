@@ -129,6 +129,7 @@ export const CreatePost = ({ forumId }) => {
                 </div>
 
             </div>
+            
 
         </div>
     );

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import {getPostsForum, createPost} from "../services/postService";
+import { getPostsByForo, editPost } from "../services/postService";
 
-export const usePost = (forumId) => {
+export const usePost = (foro_id) => {
    
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);

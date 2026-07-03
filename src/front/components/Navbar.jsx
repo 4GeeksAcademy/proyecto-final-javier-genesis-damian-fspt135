@@ -91,14 +91,6 @@ export const Navbar = () => {
                             <button
                                 className="dropdown-item"
                             >
-                                Tags
-                            </button>
-                        </li>
-
-                        <li>
-                            <button
-                                className="dropdown-item"
-                            >
                                 Tema
                             </button>
                         </li>

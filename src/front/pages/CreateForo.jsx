@@ -23,10 +23,10 @@ export const CreateForo = () => {
   } = useCreateForo();
 
 
-  const { getDataTag, onSelectedTag, handleSaveForo, selectedTag } = useTag();
+  const { chargeTagsToCreateForo, onSelectedTag, handleSaveForo, selectedTag } = useTag();
 
   useEffect(() => {
-    getDataTag();
+    chargeTagsToCreateForo();
   }, []);
 
   // const [likeCount, setLikeCount] = useState(0);
