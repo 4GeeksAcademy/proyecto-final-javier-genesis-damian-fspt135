@@ -82,7 +82,7 @@ export const useProfileView = () => {
         description: profile.description,
         profileImg: selectedImage,
       });
-
+      
       await loadProfile();
 
       setEditingSection(null);

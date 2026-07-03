@@ -23,10 +23,10 @@ export const CreateForo = () => {
   } = useCreateForo();
 
 
-  const { chargeTagsToCreateForo, onSelectedTag, handleSaveForo, selectedTag } = useTag();
+  const { getDataTag, onSelectedTag, handleSaveForo, selectedTag } = useTag();
 
   useEffect(() => {
-    chargeTagsToCreateForo();
+    getDataTag();
   }, []);
 
   // const [likeCount, setLikeCount] = useState(0);
@@ -157,7 +157,7 @@ export const CreateForo = () => {
         <div className="row justify-content-between align-items-center g-3">
           <div className="col-auto">
             <Link
-              to="/foro"
+              to="/feed"
               className="btn btn-outline-secondary btn-lg rounded-pill shadow-sm px-4 fw-bold fs-6"
             >
               <i className="bi bi-arrow-left me-2"></i>Back Home

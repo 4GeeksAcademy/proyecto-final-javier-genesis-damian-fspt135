@@ -3,6 +3,7 @@ import "../../css/feed.css";
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { followForo } from "../../services/followService";
+import userImg from "../../front/assets/img/userImg.png";
 
 export const Feed = () => {
 
@@ -55,7 +56,7 @@ export const Feed = () => {
                 >
 
                     <img
-                        src={user?.img}
+                        src={user?.img || userImg}
                         alt={user?.first_name}
                         className="profile-avatar"
                     />

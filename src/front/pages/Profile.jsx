@@ -6,6 +6,7 @@ import { useTag } from "../hooks/useTag";
 import { BodyTag } from "../components/BodyTag";
 import { deleteTagFromUser } from "../../services/tagService";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import userImg from "../../front/assets/img/userImg.png";
 
 
 export const Profile = () => {
@@ -60,7 +61,7 @@ export const Profile = () => {
                 <div className="profile-avatar-card">
 
                     <img
-                        src={profile?.img}
+                        src={profile?.img || userImg}
                         alt={profile?.first_name}
                         className="profile-avatar"
                     />

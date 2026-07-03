@@ -6,7 +6,7 @@ export const getProfile = async (userId) => {
   const response = await fetch(`${BACKEND_URL}/api/profile/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
-    },
+    }
   });
 
   const data = await response.json();
@@ -19,9 +19,11 @@ export const getProfile = async (userId) => {
 };
 
 export const updateProfile = async (userId, profileData) => {
+  console.log(updateProfile, 'soy updateProfile');
+  
   if (!userId) {
     throw new Error(
-      "El ID de usuario es obligatorio para actualizar el perfil.",
+      "El ID de usuario es obligatorio para actualizar el perfil."
     );
   }
 
@@ -29,23 +31,28 @@ export const updateProfile = async (userId, profileData) => {
 
   if (!token) {
     throw new Error(
-      "No se encontró el token de autorización. Por favor, inicia sesión.",
+      "No se encontró el token de autorización. Por favor, inicia sesión."
     );
   }
 
   try {
     const formData = new FormData();
-    formData.append("first_name", profileData.firstName);
-    formData.append("last_name", profileData.lastName);
-    formData.append("username", profileData.username);
-    formData.append("email", profileData.email);
-    formData.append("date_birth", profileData.birthDate);
-    formData.append("description", profileData.description);
+   const appendIfPresent = (key, value) => {
+      if (value !== undefined && value !== null && value !== "") {
+        formData.append(key, value);
+      }
+    };
+    appendIfPresent("first_name", profileData.firstName);
+    appendIfPresent("last_name", profileData.lastName);
+    appendIfPresent("username", profileData.username);
+    appendIfPresent("email", profileData.email);
+    appendIfPresent("date_birth", profileData.birthDate);
+    appendIfPresent("description", profileData.description);
 
     if (profileData.profileImg) {
       formData.append("img", profileData.profileImg);
     }
-
+    
     const response = await fetch(`${BACKEND_URL}/api/profile/eddit/${userId}`, {
       method: "PUT",
       headers: {
