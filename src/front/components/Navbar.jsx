@@ -1,8 +1,21 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/img/logomin.png";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import "../../css/Navbar.css";
 
 export const Navbar = () => {
+
+    const navigate = useNavigate();
+    const [search, setSearch] = useState("");
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const handleSearch = (e) => {
+        if (e.key === "Enter") {
+            navigate(`/feed?search=${search}`);
+        }
+    };
 
     return (
 
@@ -29,6 +42,9 @@ export const Navbar = () => {
                         type="text"
                         className="form-control navbar-search"
                         placeholder="Buscar foros..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onKeyDown={handleSearch}
                     />
 
                 </div>
@@ -65,7 +81,7 @@ export const Navbar = () => {
                         <li>
                             <Link
                                 className="dropdown-item"
-                                to="/profile"
+                                to={`/profile/${user?.id}`}
                             >
                                 Perfil
                             </Link>

@@ -38,28 +38,31 @@ export const createForo = async (foroData) => {
   }
 };
 
-export const getForos = async (dispatch) => {
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/foros`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.msg || "Error al obtener los foros");
-    }
-    dispatch({
-      type:"all_foros",
-      payload: data
-    });
+export const getForos = async () => {
+    try {
+        const response = await fetch(
+            `${BACKEND_URL}/api/foros`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        );
 
-    return data;
-  } catch (error) {
-    throw error;
-  }
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.msg || "Error al obtener los foros"
+            );
+        }
+
+        return data;
+
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const getForoById = async (foroId) => {
@@ -78,6 +81,47 @@ export const getForoById = async (foroId) => {
     }
 
     return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getForosFromUser = async (userId) => {
+    try {
+
+        const response = await fetch(
+            `${BACKEND_URL}/api/foro/user/${userId}`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.msg || "Error obteniendo foros del usuario"
+            );
+        }
+
+        return data;
+
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const searchForos = async (query) => {
+  try {
+    const response = await fetch(
+      `${BACKEND_URL}/api/foros/search?query=${query}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.msg || "Error buscando foros");
+    }
+
+    return data;
+
   } catch (error) {
     throw error;
   }

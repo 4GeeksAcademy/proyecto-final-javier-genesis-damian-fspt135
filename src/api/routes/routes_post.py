@@ -16,60 +16,67 @@ from api.routes import api
 @jwt_required()
 def create_post():
 
-    content = request.form.get('content')
-    foro_id = request.form.get('foro_id')
-    title = request.form.get('title')
+    try:
 
-    if not title:
-        return jsonify({
-            "msg": "Title is required"
-        }), 400
+        content = request.form.get('content')
+        foro_id = request.form.get('foro_id')
+        title = request.form.get('title')
 
-    if not content:
-        return jsonify({
-            "msg": "Content is required"
-        }), 400
+        print("TITLE:", title)
+        print("CONTENT:", content)
+        print("FORO_ID:", foro_id)
+        print("JWT IDENTITY:", get_jwt_identity())
 
-    img_url = None
+        if not title:
+            return jsonify({
+                "msg": "Title is required"
+            }), 400
 
-    if 'img' in request.files:
+        if not content:
+            return jsonify({
+                "msg": "Content is required"
+            }), 400
 
-        file_to_upload = request.files['img']
+        img_url = None
 
-        if file_to_upload.filename != '':
+        if 'img' in request.files:
 
-            try:
+            file_to_upload = request.files['img']
+
+            if file_to_upload.filename != '':
 
                 upload_result = cloudinary.uploader.upload(
-                file_to_upload,
-                upload_preset="neqycdyx"  
+                    file_to_upload,
+                    upload_preset="neqycdyx"
                 )
-                
 
                 img_url = upload_result["secure_url"]
 
-            except Exception as e:
+        new_post = Post(
+            title=title,
+            content=content,
+            img=img_url,
+            foro_id=int(foro_id) if foro_id else None,
+            user_id=int(get_jwt_identity())
+        )
 
-                return jsonify({
-                    "msg": str(e)
-                }), 500
+        db.session.add(new_post)
+        db.session.commit()
 
-    new_post = Post(
-        title=title,
-        content=content,
-        img=img_url,
-        foro_id=int(foro_id) if foro_id else None,
-        user_id=int(get_jwt_identity())
-    )
+        return jsonify({
+            "msg": "Post created",
+            "post": new_post.serialize_post()
+        }), 201
 
-    db.session.add(new_post)
-    db.session.commit()
+    except Exception as e:
 
-    return jsonify({
-        "msg": "Post created",
-        "post": new_post.serialize_post()
-    }), 201
+        db.session.rollback()
 
+        print("ERROR CREANDO POST:", str(e))
+
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 @api.route('/post/<int:post_id>', methods=['GET'])
 def get_post_id(post_id):

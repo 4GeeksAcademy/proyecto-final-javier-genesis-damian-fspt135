@@ -1,82 +1,91 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import { getForos } from "../../services/foroService";
-import {getMyFollow} from "../../services/followService"
+import { getMyFollow } from "../../services/followService";
+import { getTagsFromUser } from "../../services/tagService";
 
 export const useFeed = () => {
+  const location = useLocation();
 
-    const [foros, setForos] = useState([]);
-    const [followForos, setFollowForos] = useState([])
-    const [loading, setLoading] = useState(true);
-    const [search, setSearch] = useState("");
-    const [activeTag, setActiveTag] = useState("");
+  const queryParams = new URLSearchParams(location.search);
 
-    const user = JSON.parse(localStorage.getItem("user"));
+  const searchFromUrl = queryParams.get("search") || "";
 
-    useEffect(() => {
-        loadForos();
-        loadFollowForos();
-    }, []);
+  const [foros, setForos] = useState([]);
+  const [followForos, setFollowForos] = useState([]);
+  const [userTags, setUserTags] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTag, setActiveTag] = useState("");
 
-    const loadForos = async () => {
-        try {
-            const data = await getForos();
-            console.log(data);
-            setForos(data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const user = JSON.parse(localStorage.getItem("user"));
 
-   const loadFollowForos = async () => {
+  useEffect(() => {
+    loadForos();
+    loadFollowForos();
+    loadUserTags();
+  }, []);
+
+  const loadForos = async () => {
     try {
+      const data = await getForos();
 
-        const data = await getMyFollow();
+      console.log("FOROS:", data);
 
-        setFollowForos(
-            data.slice(-3).reverse()
-        );
-
+      setForos(data);
+      
     } catch (error) {
-
-        console.log(error);
-
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-};
+  };
 
-    const allTags = [
-        ...new Set(
-            foros.flatMap((foro) => foro.tags ?? [])
-        )
-    ];
+  const loadFollowForos = async () => {
+    try {
+      const data = await getMyFollow();
 
-    const filteredForos = foros.filter((foro) => {
-        const matchSearch = foro.title
-            .toLowerCase()
-            .includes(search.toLowerCase());
+      setFollowForos(data.slice(-3).reverse());
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-        const matchTag =
-            activeTag === "" ||
-            (foro.tags ?? []).includes(activeTag);
+  const loadUserTags = async () => {
+    try {
+      const data = await getTagsFromUser(user?.id);
 
-        return matchSearch && matchTag;
-    });
+      setUserTags(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    const myForos = foros
-        .filter((foro) => Number(foro.user_id) === Number(user?.id))
-        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const allTags = [...new Set(foros.flatMap((foro) => foro.tags ?? []))];
 
-    return {
-  loading,
-    search,
-    setSearch,
+  const filteredForos = foros.filter((foro) => {
+    const matchSearch = foro.title
+      .toLowerCase()
+      .includes(searchFromUrl.toLowerCase());
+
+    const matchTag = activeTag === "" || (foro.tags ?? []).includes(activeTag);
+
+    return matchSearch && matchTag;
+  });
+
+  const myForos = foros
+    .filter((foro) => Number(foro.user_id) === Number(user?.id))
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  return {
+    loading,
     filteredForos,
     myForos,
     followForos,
+    userTags,
     loadFollowForos,
     allTags,
     activeTag,
-    setActiveTag
-};
+    setActiveTag,
+  };
 };

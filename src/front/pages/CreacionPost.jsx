@@ -1,12 +1,13 @@
-
+import { useParams } from "react-router-dom";
 import { CreatePost } from "../components/Post/Createpost";
 
 export const CreacionPost = () => {
+
+    const { forumId } = useParams();
+
     return (
         <div className="container mt-5">
-            <h1></h1>
-
-            <CreatePost forumId={1} />
+            <CreatePost forumId={forumId} />
         </div>
     );
 };

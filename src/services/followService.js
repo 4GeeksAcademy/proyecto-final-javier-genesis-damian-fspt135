@@ -32,3 +32,19 @@ export const followForo = async (foroId) => {
 
     return await response.json();
 };
+
+export const unfollowForo = async (foroId) => {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+        `${BACKEND_URL}/api/unfollow/${foroId}`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return await response.json();
+};

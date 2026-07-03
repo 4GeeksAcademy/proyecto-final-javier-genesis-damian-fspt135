@@ -30,7 +30,7 @@ export const CreatePost = ({ forumId }) => {
                                 CREACIÓN POST
                             </h3>
 
-                             {success && (                        // ← nuevo
+                             {success && (                        
                                 <div className="alert alert-success text-center" role="alert">
                                     ✅ ¡Post creado exitosamente!
                                 </div>
