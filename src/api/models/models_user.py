@@ -24,6 +24,7 @@ class User(db.Model):
     tag = relationship('Tag_select')
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+    likedPost = relationship ('LikePost')
 
     def serialize(self):
         return {

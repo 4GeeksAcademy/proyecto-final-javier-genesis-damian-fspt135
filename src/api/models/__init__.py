@@ -6,4 +6,4 @@ from api.models.model_post import Post
 from api.models.model_tag import Tag
 from api.models.model_select_tag import Tag_select
 from api.models.model_comment import Comment
-
+from api.models.model_like_post import LikePost

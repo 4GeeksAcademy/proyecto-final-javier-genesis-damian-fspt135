@@ -16,6 +16,7 @@ import { Feed } from "./pages/Feed";
 import { AllForos } from "./pages/AllForos";
 import { PostView } from "./pages/PostView";
 import { ForoPage } from "./pages/ForoPage";
+import { EditPost } from "./pages/EditPost";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,6 +39,7 @@ export const router = createBrowserRouter(
         <Route path="/foro/:foro_id/create-post" element={<CreacionPost />}/>
         <Route path="/foro/:foro_id/post/:post_id" element={<PostView />} />
         <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/foro/:foro_id/post/:post_id/edit" element={<EditPost />} />
       </Route>
     </>
   )

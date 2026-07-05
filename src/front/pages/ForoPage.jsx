@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PostCard } from "../components/Post/PostCard"
 import { BodyTagSimply } from "../components/BodyTag.jsx";
 import { useForoById } from "../hooks/Hooks_foro/useForo.js";
+import { useFollowForo } from "../hooks/Hooks_foro/useFollowForo.js";
 import logo from "../assets/img/logomin.png";
 
 
@@ -14,6 +15,11 @@ export const ForoPage = () => {
         foro, 
         loading
     }=useForoById(foro_id)
+
+     const { 
+        handleFollowForo, 
+        isFollowed, 
+        followCount } = useFollowForo(foro);
 
     if (loading) {
         return (
@@ -30,7 +36,6 @@ export const ForoPage = () => {
             </div>
         );
     }
- 
 
     return (
        <div className="container mt-4 pb-5" style={{ maxWidth: "800px" }}>
@@ -60,8 +65,17 @@ export const ForoPage = () => {
                         info <span>▼</span>
                     </button>
                     
-                    <button className="btn btn-outline-danger fw-medium px-3 shadow-sm">
-                        <i className="fa-regular fa-heart"></i> Like
+                    <button className="btn btn-outline-danger fw-medium px-3 shadow-sm"
+                    onClick={() => handleFollowForo(foro.id)}>
+                        {isFollowed ? (
+                            <>
+                                <i className="fa-solid fa-heart"></i> Siguiendo
+                            </>
+                        ) : (
+                            <>
+                                <i className="fa-regular fa-heart"></i> Seguir
+                            </>)}
+                        <span className="ms-2">{followCount > 0 ? followCount : ""}</span>
                     </button>
                 </div>
             </div>
