@@ -26,6 +26,7 @@ export const useForoById = (foro_id) => {
     try {
       setLoading(true);
       const data = await getForoById(foro_id);
+      console.log("DATOS DEL FORO RECIBIDOS:", data);
       setForo(data);
     } catch (error) {
       console.error("Error al cargar el post", error);

@@ -19,7 +19,7 @@ class Post (db.Model):
     comment = relationship('Comment')
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
-
+    likedPost= relationship("LikePost")
 
     def serialize_post(self):
         return {
