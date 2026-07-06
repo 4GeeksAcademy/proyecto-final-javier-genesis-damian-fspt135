@@ -7,7 +7,7 @@ export const useForo = () => {
 
   const getDataForo = async () => {
     try {
-      const foroList = await getForos(dispatch);
+      return await getForos(dispatch);
     } catch (err) {
       setError(err.message || "Error en enlistar foros");
     }

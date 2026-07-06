@@ -138,3 +138,39 @@ def get_forum_search():
         forum.serialize_foro()
         for forum in forums
     ]), 200
+
+
+@api.route('/foro/<int:forum_id>', methods=["PUT"])
+@jwt_required()
+def update_forum(forum_id):
+
+    forum = db.session.get(Foro, forum_id)
+    if forum is None:
+        return jsonify({"msg": "Forum not found"}), 404
+
+    if int(get_jwt_identity()) != forum.user_id:
+        return jsonify({"msg": "You do not have permission to edit this forum"}), 403
+
+    title = request.form.get("title")
+    description = request.form.get("description")
+
+    if title:
+        forum.title = title
+    if description:
+        forum.description = description
+
+    if 'img' in request.files:
+        file_to_upload = request.files['img']
+        if file_to_upload.filename != '':
+            try:
+                upload_result = cloudinary.uploader.upload(file_to_upload)
+                forum.img = upload_result["secure_url"]
+            except Exception as e:
+                return jsonify({"msg": str(e)}), 500
+
+    db.session.commit()
+
+    return jsonify({
+        "msg": "Forum updated",
+        "forum": forum.serialize_foro()
+    }), 200

@@ -1,25 +1,42 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CardForoSimply } from "../components/CardForo.jsx";
 import { useForo } from "../hooks/Hooks_foro/useForo.js";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { EditForoModal } from "../components/EditForoModal.jsx";
 
 
 export const AllForos = () => {
     const { store, dispatch } = useGlobalReducer()
+    const [ foros, setForos ] = useState([])
 
     const { getDataForo } = useForo();
 
+    const getDataForos = async() => {
+        try { 
+            const data = await getDataForo();
+            setForos(data)
+
+        } catch(err) {
+
+        }
+    
+    } 
     useEffect(() => {
-        getDataForo();
+        console.log("estoy en los foros");
+        getDataForos()
     }, []);
 
+    const [editingForo, setEditingForo] = useState(null);
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log(foros);
+    
     return (
         <div className="container py-4">
 
             <div className="d-flex flex-wrap gap-2 border p-3 rounded bg-light overflow-y-auto">
-                {store.foros && store.foros.map((foro) => {
+                {foros.map((foro) => {
                     return (
                         <div className="card shadow-sm border rounded-3 overflow-hidden bg-white">
                             <div>
@@ -31,6 +48,14 @@ export const AllForos = () => {
                                     to={`/foro/${foro.id}`}>
                                         Entrar
                                     </Link>
+                                    {Number(foro.user_id) === Number(user?.id) && (
+                                        <button
+                                            className="btn btn-outline-secondary fw-bold shadow-sm py-2 m-2"
+                                            onClick={() => setEditingForo(foro)}
+                                        >
+                                            Edit Foro
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>)
@@ -39,12 +64,19 @@ export const AllForos = () => {
 
             <div className="mb-4">
                 <Link
-                to="/feed"
-                className="btn btn-outline-secondary px-4 fw-bold mt-3"
+                    to="/feed"
+                    className="btn btn-outline-secondary px-4 fw-bold mt-3"
                 >
                     Back
                 </Link>
             </div>
+            {editingForo && (
+                <EditForoModal
+                    foro={editingForo}
+                    onSuccess={(f) => console.log("Foro actualizado:", f)}
+                    onClose={() => setEditingForo(null)}
+                />
+            )}
         </div>
     )
 }
