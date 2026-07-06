@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { updateProfile } from "../../services/profileService";
 
 export const useProfile = () => {
+
     const navigate = useNavigate();
     
     const [firstName, setFirstName] = useState("");
@@ -17,6 +18,7 @@ export const useProfile = () => {
     const [success, setSuccess] = useState(false);
 
     const handleUpdateProfile = async () => {
+        
         setError("");
         setLoading(true);
 
@@ -24,8 +26,11 @@ export const useProfile = () => {
 
         try {
             const profileData = { firstName, lastName, birthDate, profileImg, description };
-            const data = await updateProfile(userId, profileData);
+            console.log(profileData, "soy profileData");
             
+            const data = await updateProfile(userId, profileData);
+            console.log(data, "soy la data");
+                
             setSuccess(true);
             console.log("Perfil completado con éxito:", data);
             

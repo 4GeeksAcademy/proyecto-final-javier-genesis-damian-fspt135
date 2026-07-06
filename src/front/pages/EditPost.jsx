@@ -1,19 +1,24 @@
-import { useCreatePost } from "../../hooks/Hooks_post/useCreatePost";
-import "../../../css/Post.css";
+import React from "react";
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { usePost } from "../hooks/Hooks_post/usePost";
 
-export const CreatePost = ({ forumId }) => {
+
+export const EditPost = () => {
+    const navigate = useNavigate();
 
     const {
+        loading,
         title,
         setTitle,
         content,
         setContent,
+        img,
         setImg,
-        preview,
-        setPreview,
-        success,
-        handleSubmit
-    } = useCreatePost(forumId);
+        handleEditPost,
+        initialPost } = usePost();
+
+    const [preview, setPreview] = useState(initialPost?.img || null);
 
     return (
         <div className="container creacion-post-container">
@@ -27,15 +32,8 @@ export const CreatePost = ({ forumId }) => {
                         <div className="card-body p-4">
 
                             <h3 className="text-center fw-bold mb-4 creacion-post-title">
-                                CREACIÓN POST
+                                Editar Post
                             </h3>
-
-                             {success && (                        
-                                <div className="alert alert-success text-center" role="alert">
-                                    ✅ ¡Post creado exitosamente!
-                                </div>
-                            )}
-
 
                             <input
                                 type="text"
@@ -53,30 +51,40 @@ export const CreatePost = ({ forumId }) => {
                                 className="form-control mb-3"
                                 accept="image/*"
                                 onChange={(e) => {
-
-                                    const file =
-                                        e.target.files[0];
-
+                                    const file = e.target.files[0];
                                     setImg(file);
-
                                     if (file) {
-                                        setPreview(
-                                            URL.createObjectURL(file)
-                                        );
+                                        setPreview(URL.createObjectURL(file));
                                     }
                                 }}
                             />
 
                             {
                                 preview && (
-                                    <div className="text-center mb-3">
-
+                                    <div className="text-center mb-3 position-relative d-inline-block w-100">
                                         <img
                                             src={preview}
                                             alt="preview"
                                             className="img-fluid rounded shadow preview-image"
                                         />
-
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger btn-sm position-absolute top-0 end-0 m-2"
+                                            onClick={() => {
+                                                setImg("delete");
+                                                setPreview(null);
+                                                const fileInput = document.getElementById("post-image");
+                                                if (fileInput) fileInput.value = "";
+                                            }}
+                                            style={{
+                                                width: "32px",
+                                                height: "32px",
+                                                padding: "0",
+                                                zIndex: 10 /* Asegura que quede por encima de la imagen */
+                                            }}
+                                        >
+                                            <i class="fa-regular fa-circle-xmark"></i>
+                                        </button>
                                     </div>
                                 )
                             }
@@ -94,43 +102,23 @@ export const CreatePost = ({ forumId }) => {
                             <div className="d-flex justify-content-center gap-3">
 
                                 <button
+                                    type="button"
                                     className="btn btn-outline-danger btn-cancelar"
-                                    onClick={() => {
-
-                                        setTitle("");
-                                        setContent("");
-                                        setImg(null);
-                                        setPreview(null);
-
-                                        const fileInput =
-                                            document.getElementById("post-image");
-
-                                        if (fileInput) {
-                                            fileInput.value = "";
-                                        }
-
-                                    }}
+                                    onClick={() => navigate(-1)}
                                 >
                                     Cancelar
                                 </button>
                                 <button
                                     className="btn btn-primary btn-publicar"
-                                    onClick={handleSubmit}
+                                    onClick={() => handleEditPost(initialPost?.id, navigate)}
                                 >
-                                    Publicar
+                                    {loading ? "Guardando..." : "Guardar Cambios"}
                                 </button>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-            
-
         </div>
     );
 };

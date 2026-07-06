@@ -58,6 +58,7 @@ def get_forums():
 
 
 @api.route("/foro/<int:forum_id>", methods=["GET"])
+@jwt_required()
 def get_forum_id(forum_id):
 
     forum = Foro.query.get(forum_id)
@@ -67,9 +68,56 @@ def get_forum_id(forum_id):
             "msg": "Forum not found"
         }), 404
 
+    user_id = get_jwt_identity()
+    foro_data = forum.serialize_foro()
+    posts_con_likes = []
+
+    for post in forum.post:
+        post_data = post.serialize_post()
+
+        user_liked = False
+        if user_id:
+            id_user_num = int(user_id)
+            for like in post.likedPost:
+                if like.user_id == id_user_num:
+                        user_liked = True
+                        break
+                
+        post_data["likes_count"] = len(post.likedPost)
+        post_data["like_by_user"] = user_liked
+        post_data["comments_count"] = len(post.comment)
+
+        posts_con_likes.append(post_data)
+
+    foro_data["posts"] = posts_con_likes
+
+    user_follow = False
+    if user_id:
+        id_user_num = int(user_id)
+        for follow in forum.following:
+            if follow.user_id == id_user_num:
+                user_follow = True
+                break
+    
+    foro_data["follow_by_user"] = user_follow
+    foro_data["followers_count"] = len(forum.following)
+
     return jsonify(
-        forum.serialize_foro()
+        foro_data
     ), 200
+
+
+@api.route("/foro/user/<int:user_id>", methods=["GET"])
+def get_foros_from_user(user_id):
+
+    foros = Foro.query.filter_by(
+        user_id=user_id
+    ).all()
+
+    return jsonify([
+        foro.serialize_foro()
+        for foro in foros
+    ]), 200
 
 
 @api.route("/foros/search", methods=["GET"])
