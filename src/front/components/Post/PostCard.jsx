@@ -37,11 +37,11 @@ export const PostCard = ({ post }) => {
             >
                 <img
                     src={post.user?.img_user || userImg}
-                    alt={post.user?.name}
+                    alt={post.user?.username}
                     className="rounded-circle border"
                     style={{ width: "25px", height: "25px", objectFit: "cover" }}
                 />
-                <span className="fw-semibold small">{post.user?.name}</span>
+                <span className="fw-semibold small">{post.user?.username}</span>
             </div>
             <div className="position-relative p-4 border rounded bg-white text-dark shadow-sm">
                 {currentUserId === post.user_id && ( 

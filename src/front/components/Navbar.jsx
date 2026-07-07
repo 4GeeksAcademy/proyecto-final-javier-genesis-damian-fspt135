@@ -17,6 +17,12 @@ export const Navbar = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/");
+    };
+
     return (
 
         <nav className="navbar bg-white shadow-sm border-bottom">
@@ -94,6 +100,7 @@ export const Navbar = () => {
                         <li>
                             <button
                                 className="dropdown-item text-danger"
+                                onClick={handleLogout}
                             >
                                 Cerrar Sesión
                             </button>

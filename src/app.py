@@ -13,7 +13,7 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from api.extension import bcrypt
-
+from datetime import timedelta
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 
@@ -29,6 +29,7 @@ CORS(app)
 # JWT
 #app.config["JWT_SECRET_KEY"] = "mindfed-secret-key"
 app.config["JWT_SECRET_KEY"] = os.getenv("FLASK_JWT")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=7)
 # db.init_app(app)
 jwt = JWTManager(app)
 bcrypt.init_app(app)

@@ -24,7 +24,7 @@ class Comment (db.Model):
             "content": self.content,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
-            "user": {"name":self.user.username, "img_user": self.user.img}
+            "user": {"username":self.user.username, "img_user": self.user.img}
         }
     
     def serialize_comment(self):
@@ -32,5 +32,5 @@ class Comment (db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "content": self.content,
-            "user": {"name":self.user.username, "img_user": self.user.img}
+            "user": {"username":self.user.username, "img_user": self.user.img}
         }
