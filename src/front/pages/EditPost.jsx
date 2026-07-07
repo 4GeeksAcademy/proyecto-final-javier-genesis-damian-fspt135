@@ -80,7 +80,7 @@ export const EditPost = () => {
                                                 width: "32px",
                                                 height: "32px",
                                                 padding: "0",
-                                                zIndex: 10 /* Asegura que quede por encima de la imagen */
+                                                zIndex: 10 
                                             }}
                                         >
                                             <i class="fa-regular fa-circle-xmark"></i>

@@ -25,6 +25,11 @@ export const useCreatePost = (forumId) => {
         formData.append("content", content);
         formData.append("foro_id", forumId);
 
+        if(!title.trim() || !content.trim()) {
+            alert("Error: El título y el contenido son obligatorios.");
+            return false;
+        }
+
         if (img) {
             formData.append("img", img);
         }
@@ -45,10 +50,12 @@ export const useCreatePost = (forumId) => {
             setContent("");
             setImg(null);
 
+            return true;
+
         } catch (error) {
 
             console.log(error);
-
+            return false;
         }
     };
 

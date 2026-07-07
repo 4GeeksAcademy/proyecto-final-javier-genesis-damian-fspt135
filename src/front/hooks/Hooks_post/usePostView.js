@@ -30,6 +30,7 @@ export const usePostView = (post_id) => {
     const loadComments = async () => {
         try {
             const data = await getCommentsByPost(post_id);
+            console.log("Comentarios cargados:", data);
             setComments(data.comments || []);
         } catch (error) {
             console.error("Error al cargar comentarios", error);

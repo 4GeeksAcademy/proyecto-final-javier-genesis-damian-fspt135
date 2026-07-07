@@ -1,8 +1,10 @@
 import { useCreatePost } from "../../hooks/Hooks_post/useCreatePost";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import "../../../css/Post.css";
 
 export const CreatePost = ({ forumId }) => {
-
+    const {foro_id} = useParams();
+    const navigate = useNavigate();
     const {
         title,
         setTitle,
@@ -14,6 +16,14 @@ export const CreatePost = ({ forumId }) => {
         success,
         handleSubmit
     } = useCreatePost(forumId);
+
+    const submitPost = async (e) => {
+        e.preventDefault();
+        const isOK = await handleSubmit();
+        if (isOK) {
+            navigate(`/foro/${foro_id}`);
+        }
+    };
 
     return (
         <div className="container creacion-post-container">
@@ -96,7 +106,7 @@ export const CreatePost = ({ forumId }) => {
                                 <button
                                     className="btn btn-outline-danger btn-cancelar"
                                     onClick={() => {
-
+                                        
                                         setTitle("");
                                         setContent("");
                                         setImg(null);
@@ -108,14 +118,14 @@ export const CreatePost = ({ forumId }) => {
                                         if (fileInput) {
                                             fileInput.value = "";
                                         }
-
+                                        navigate(-1);
                                     }}
                                 >
                                     Cancelar
                                 </button>
                                 <button
                                     className="btn btn-primary btn-publicar"
-                                    onClick={handleSubmit}
+                                    onClick={submitPost}
                                 >
                                     Publicar
                                 </button>

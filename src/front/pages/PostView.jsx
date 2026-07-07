@@ -1,10 +1,12 @@
 import { useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaUserCircle, FaEdit, FaTimes } from "react-icons/fa";
 import { usePostView } from "../hooks/Hooks_post/usePostView";
- 
+import userImg from "../../front/assets/img/userImg.png";
+
 export const PostView = () => {
     const { post_id } = useParams();
+    const navigate = useNavigate();
     const {
         post,
         comments,
@@ -18,14 +20,14 @@ export const PostView = () => {
         currentUserId
     } = usePostView(post_id);
     const inputRef = useRef(null);
- 
+
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             handleComment();
         }
     };
- 
+
     if (loading) {
         return (
             <div className="text-center mt-5">
@@ -33,7 +35,7 @@ export const PostView = () => {
             </div>
         );
     }
- 
+
     if (!post) {
         return (
             <div className="text-center mt-5">
@@ -41,20 +43,20 @@ export const PostView = () => {
             </div>
         );
     }
- 
+
     const hasImg = !!post.img;
- 
+
     return (
         <div className="container py-4">
- 
+
             <div className="card shadow-sm border-0 rounded-4">
- 
+
                 <div className="card-body p-4">
- 
+
                     <h2 className="text-center fw-bold mb-4">{post.title}</h2>
- 
+
                     <div className={`row g-4 mb-4 ${!hasImg ? "justify-content-center" : ""}`}>
- 
+
                         {hasImg && (
                             <div className="col-12 col-md-5">
                                 <img
@@ -65,13 +67,13 @@ export const PostView = () => {
                                 />
                             </div>
                         )}
- 
+
                         <div className={`col-12 ${hasImg ? "col-md-7" : "col-md-8 text-center"}`}>
                             <p className="fs-5 text-secondary lh-lg">{post.content}</p>
                         </div>
- 
+
                     </div>
- 
+
                     <div className="bg-light rounded-3 p-3">
                         <h6 className="fw-bold text-muted mb-3">Comentarios</h6>
                         <div
@@ -88,8 +90,13 @@ export const PostView = () => {
                                     >
                                         <div className="d-flex justify-content-between align-items-center mb-1">
                                             <span className="fw-semibold text-secondary small d-flex align-items-center gap-1">
-                                                <FaUserCircle />
-                                                {comment.username || `Usuario ${comment.user_id}`}
+                                                <img
+                                                    src={comment.user?.img_user || userImg}
+                                                    alt={comment.user?.username}
+                                                    className="rounded-circle border"
+                                                    style={{ width: "25px", height: "25px", objectFit: "cover" }}
+                                                />
+                                                {comment.user?.username || `Usuario ${comment.user_id}`}
                                             </span>
                                             {Number(comment.user_id) === Number(currentUserId) && (
                                                 <button
@@ -106,7 +113,7 @@ export const PostView = () => {
                                 ))
                             )}
                         </div>
- 
+
                         {editingCommentId && (
                             <div className="d-flex align-items-center gap-2 mt-2 px-1">
                                 <small className="text-danger fw-semibold">Editando comentario</small>
@@ -119,7 +126,7 @@ export const PostView = () => {
                                 </button>
                             </div>
                         )}
- 
+
                         <div className="d-flex gap-2 align-items-center mt-3">
                             <input
                                 ref={inputRef}
@@ -139,10 +146,18 @@ export const PostView = () => {
                             </button>
                         </div>
                     </div>
- 
+                    <div className="d-flex justify-content-start gap-3">
+                        <button
+                            type="button"
+                            className="btn btn-outline-secondary btn-md mt-3 shadow-sm px-4 fw-bold fs-6"
+                            onClick={() => navigate(-1)}
+                        >
+                            Back
+                        </button>
+                    </div>
                 </div>
             </div>
- 
+
         </div>
     );
 };

@@ -12,7 +12,7 @@ class Comment (db.Model):
     post_id: Mapped[int] = mapped_column(ForeignKey("post.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
-    user = db.relationship('User', overlaps="comment")
+    user = db.relationship('User', back_populates="comment", overlaps="comment")
     post = db.relationship('Post', overlaps="comment")
 
 
@@ -23,12 +23,14 @@ class Comment (db.Model):
             "post_id": self.post_id,
             "content": self.content,
             "created_at": self.created_at.isoformat() if self.created_at else None,
-            "updated_at": self.updated_at.isoformat() if self.updated_at else None
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+            "user": {"username":self.user.username, "img_user": self.user.img}
         }
     
     def serialize_comment(self):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "content": self.content
+            "content": self.content,
+            "user": {"username":self.user.username, "img_user": self.user.img}
         }
