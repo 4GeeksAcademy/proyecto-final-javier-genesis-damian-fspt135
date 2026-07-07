@@ -88,14 +88,6 @@ export const Navbar = () => {
                         </li>
 
                         <li>
-                            <button
-                                className="dropdown-item"
-                            >
-                                Tema
-                            </button>
-                        </li>
-
-                        <li>
                             <hr className="dropdown-divider" />
                         </li>
 

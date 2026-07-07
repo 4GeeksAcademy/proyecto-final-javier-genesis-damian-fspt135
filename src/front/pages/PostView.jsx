@@ -1,10 +1,11 @@
 import { useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaUserCircle, FaEdit, FaTimes } from "react-icons/fa";
 import { usePostView } from "../hooks/Hooks_post/usePostView";
  
 export const PostView = () => {
     const { post_id } = useParams();
+    const navigate = useNavigate();
     const {
         post,
         comments,
@@ -139,7 +140,15 @@ export const PostView = () => {
                             </button>
                         </div>
                     </div>
- 
+                        <div className="d-flex justify-content-start gap-3">
+                            <button
+                            type="button"
+                            className="btn btn-outline-secondary btn-md mt-3 shadow-sm px-4 fw-bold fs-6"
+                            onClick={() => navigate(-1)}
+                            >
+                               Back
+                            </button>
+                        </div>
                 </div>
             </div>
  

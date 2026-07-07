@@ -18,13 +18,14 @@ class User(db.Model):
     date_birth: Mapped[str] = mapped_column(String(255), nullable=True)
     description: Mapped[str] = mapped_column(String(255), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean(), default=True)
-    foro = relationship('Foro')
-    following = relationship("Follow", cascade="all, delete-orphan")
+    foro = relationship('Foro',  overlaps="user")
+    following = relationship("Follow", cascade="all, delete-orphan",  overlaps="user")
     post = relationship('Post', back_populates="user")
-    tag = relationship('Tag_select')
+    tag = relationship('Tag_select', overlaps="user")
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
-    likedPost = relationship ('LikePost')
+    likedPost = relationship ('LikePost', overlaps="user")
+    comment = relationship('Comment', back_populates="user")
 
     def serialize(self):
         return {

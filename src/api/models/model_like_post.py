@@ -6,8 +6,8 @@ class LikePost (db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id = mapped_column(ForeignKey ("user.id"), nullable=False)
     post_id = mapped_column(ForeignKey ("post.id"), nullable=False)
-    user = relationship("User")
-    post = relationship("Post")
+    user = relationship("User", overlaps="likedPost")
+    post = relationship("Post", overlaps="likedPost")
 
 
     def serialize_like_post(self):

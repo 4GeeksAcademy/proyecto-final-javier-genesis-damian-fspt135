@@ -35,7 +35,8 @@ export const AllForos = () => {
     return (
         <div className="container py-4">
 
-            <div className="d-flex flex-wrap gap-2 border p-3 rounded bg-light overflow-y-auto">
+            <div className="d-flex flex-wrap gap-2 border p-3 rounded bg-light overflow-y-auto"
+            style={{maxHeight: "800px"}}>
                 {foros.map((foro) => {
                     return (
                         <div className="card shadow-sm border rounded-3 overflow-hidden bg-white">

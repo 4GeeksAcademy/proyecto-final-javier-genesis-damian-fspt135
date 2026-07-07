@@ -39,8 +39,8 @@ export const ForoPage = () => {
 
     return (
        <div className="container mt-4 pb-5" style={{ maxWidth: "800px" }}>
-            <div className="d-flex align-items-center justify-content-between gap-3 mb-3 bg-white p-3 rounded border shadow-sm">
-                <div className="flex-shrink-0">
+            <div className="row align-items-center g-3 mb-3 bg-white p-3 rounded border shadow-sm mx-0">
+                <div className="col-12 col-md-3 d-flex justify-content-center justify-content-md-start">
                     <img 
                         src={foro.img || logo} 
                         alt="Foto del foro" 
@@ -48,12 +48,12 @@ export const ForoPage = () => {
                         style={{ width: "70px", height: "70px", objectFit: "cover" }}
                     />
                 </div>
-                <div className="flex-grow-1 text-center">
-                    <h1 className="h3 border rounded py-2 px-4 bg-light d-inline-block fw-bold text-uppercase m-0">
+                <div className="col-12 col-md-6 text-center">
+                    <h1 className="h3 border rounded py-2 px-4 bg-light d-inline-block fw-bold text-uppercase m-0 w-100">
                         {foro.title}
                     </h1>
                 </div>
-                <div className="d-flex gap-2">
+                <div className="d-flex gap-2 w-100 w-md-auto justify-content-center justify-content-md-end mt-3 mt-md-0">
                     <button 
                         className="btn btn-secondary fw-medium px-3 shadow-sm d-flex align-items-center gap-1"
                         type="button"
@@ -79,7 +79,7 @@ export const ForoPage = () => {
                     </button>
                 </div>
             </div>
-            <div className="collapse mb-3" id="infoForoCollapse">
+            <div className="collapse mb-3" id="infoForoCollapse" >
                 <div className="card card-body bg-white border shadow-sm">
                     <h5 className="fw-bold text-secondary mb-2">Acerca de este foro:</h5>
                     <p className="text-muted small mb-3">{foro.description}</p>
@@ -102,7 +102,8 @@ export const ForoPage = () => {
                     placeholder="BUSQUEDA" 
                 />
             </div>
-            <div className="p-4 border rounded-4 bg-white shadow-sm mb-4">
+            <div className="p-4 border rounded-4 bg-white shadow-sm mb-4" 
+            style={{ maxHeight: "800px", overflowY: "auto" }}>
                 {foro.posts && foro.posts.length > 0 ? (
                     foro.posts.map((post)=>(
                         <Link className="text-decoration-none text-dark"

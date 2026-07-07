@@ -35,7 +35,7 @@ def get_comments_by_posts(post_id):
     if post is None:
         return jsonify({"msg": "Post not found"}), 400
 
-    comments_list = db.session.query(Comment).all()
+    comments_list = db.session.query(Comment).filter_by(post_id=post_id).all()
     comments = list(map(lambda Comment: Comment.serialize_comment(), comments_list))
 
     return jsonify({"post_id": post_id, "comments": comments})

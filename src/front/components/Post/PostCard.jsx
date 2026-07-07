@@ -22,7 +22,8 @@ export const PostCard = ({ post }) => {
         likeCount
     } = usePostLikes(post);
 
-    const currentUserId = Number(localStorage.getItem("userId"));
+    const userId = localStorage.getItem("user");
+    const currentUserId = userId ? JSON.parse(userId).id : null;
 
     const goToEditPost = () => {
         navigate(`/foro/${foro_id}/post/${post.id}/edit`, { state: { post } });

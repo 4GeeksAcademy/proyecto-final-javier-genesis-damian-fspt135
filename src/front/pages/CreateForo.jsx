@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCreateForo } from "../hooks/Hooks_foro/useCreateForo.js";
 import { BodyTag } from "../components/BodyTag.jsx";
 import { useTag } from "../hooks/useTag.js";
@@ -7,6 +7,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 export const CreateForo = () => {
 
+  const navigate = useNavigate();
   const { store, dispatch } = useGlobalReducer()
 
   const {
@@ -29,6 +30,7 @@ export const CreateForo = () => {
     getDataTag();
   }, []);
 
+
   // const [likeCount, setLikeCount] = useState(0);
 
   // const handleLike = () => {
@@ -39,8 +41,10 @@ export const CreateForo = () => {
     e.preventDefault()
     try {
       const res = await handleCreateForo();
-      const foroId = res.forum.id;
-      await handleSaveForo(foroId);
+      if (res && res.forum && res.forum.id) {
+        const newForoId = res.forum.id;
+        navigate(`/foro/${newForoId}`)
+      }
     } catch (err) {
       console.error("Error to save foro", err);
     }

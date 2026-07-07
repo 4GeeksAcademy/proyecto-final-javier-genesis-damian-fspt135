@@ -22,7 +22,7 @@ export const useCreateForo = () => {
     if (!title.trim()) {
       setError("El título del foro es obligatorio.");
       return;
-    }
+    } 
 
     setLoading(true);
 
@@ -36,11 +36,12 @@ export const useCreateForo = () => {
       const data = await createForo(foroData);
 
       setSuccess(true);
-      return data;
 
       setTitle("");
       setImg("");
       setDescription("");
+
+      return data
 
       setTimeout(() => {
         navigate("/");

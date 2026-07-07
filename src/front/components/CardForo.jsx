@@ -5,13 +5,13 @@ import logo from "../assets/img/logomin.png";
 export const CardForoSimply = ({ foro }) => {
 
     return (
-        <div className="card shadow-sm h-100" style={{ maxWidth: "22rem", overflow: "hidden" }}>
+        <div className="card shadow-sm h-100" style={{ minWidth: "22rem", maxWidth: "22rem", overflow: "hidden" }}>
             
             <div style={{ width: "100%", height: "200px", overflow: "hidden" }}>
                 <img 
                     src={foro.img || logo} 
                     className="card-img-top w-100 h-100" 
-                    style={{ objectFit: "cover", objectPosition: "center" }} // 💡 Recorta sin deformar
+                    style={{ objectFit: "cover", objectPosition: "center" }} 
                     alt={foro.title} 
                 />
             </div>
