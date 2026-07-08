@@ -313,7 +313,7 @@ export const Profile = () => {
                         {
                             editingSection === "info" ? (
                                 <input
-                                    type="text"
+                                    type="date"
                                     className="form-control"
                                     value={profile?.date_birth || ""}
                                     onChange={(e) =>

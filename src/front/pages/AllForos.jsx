@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { CardForoSimply } from "../components/CardForo.jsx";
 import { useForo } from "../hooks/Hooks_foro/useForo.js";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import { EditForoModal } from "../components/EditForoModal.jsx";
 
 
 export const AllForos = () => {
@@ -28,9 +27,6 @@ export const AllForos = () => {
         getDataForos()
     }, []);
 
-    const [editingForo, setEditingForo] = useState(null);
-    const user = JSON.parse(localStorage.getItem("user"));
-    console.log(foros);
     
     return (
         <div className="container py-4">
@@ -49,14 +45,6 @@ export const AllForos = () => {
                                     to={`/foro/${foro.id}`}>
                                         Entrar
                                     </Link>
-                                    {Number(foro.user_id) === Number(user?.id) && (
-                                        <button
-                                            className="btn btn-outline-secondary fw-bold shadow-sm py-2 m-2"
-                                            onClick={() => setEditingForo(foro)}
-                                        >
-                                            Edit Foro
-                                        </button>
-                                    )}
                                 </div>
                             </div>
                         </div>)
@@ -71,13 +59,6 @@ export const AllForos = () => {
                     Back
                 </Link>
             </div>
-            {editingForo && (
-                <EditForoModal
-                    foro={editingForo}
-                    onSuccess={(f) => console.log("Foro actualizado:", f)}
-                    onClose={() => setEditingForo(null)}
-                />
-            )}
         </div>
     )
 }
