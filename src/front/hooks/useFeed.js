@@ -13,6 +13,7 @@ export const useFeed = () => {
   const searchFromUrl = queryParams.get("search") || "";
 
   const [foros, setForos] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [followForos, setFollowForos] = useState([]);
   const [userTags, setUserTags] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,12 @@ export const useFeed = () => {
         payload: data,
       });
       setForos(data);
+      const allPosts = data
+
+        .flatMap((foro) => foro.posts)
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      setPosts(allPosts);
     } catch (error) {
       console.log(error);
     } finally {
@@ -47,7 +54,7 @@ export const useFeed = () => {
     try {
       const data = await getMyFollow();
 
-      setFollowForos(data.slice(-3).reverse());
+      setFollowForos([...data].reverse());
     } catch (error) {
       console.log(error);
     }
@@ -79,8 +86,26 @@ export const useFeed = () => {
     .filter((foro) => Number(foro.user_id) === Number(user?.id))
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
+ 
+  const followedForoIds = new Set(followForos.map((foro) => Number(foro.id)));
+
+  const followedPosts = posts.filter((post) =>
+    followedForoIds.has(Number(post.foro_id))
+  );
+
+
+  const followedPostIds = new Set(followedPosts.map((post) => post.id));
+
+  const fallbackPosts = posts.filter(
+    (post) => !followedPostIds.has(post.id)
+  );
+
+  const carouselPosts = [...followedPosts, ...fallbackPosts].slice(0, 3);
+
   return {
     loading,
+    posts,
+    carouselPosts,
     filteredForos,
     myForos,
     followForos,
