@@ -125,18 +125,24 @@ def get_posts_by_foro(foro_id):
 @api.route('/foro/<int:foro_id>/posts/top', methods=['GET'])
 def get_top_three_posts(foro_id):
 
-    posts = Post.query.filter_by(
-        foro_id=foro_id
-    ).order_by(
-        Post.created_at.desc()
-    ).limit(3).all()
+    posts = (
+        Post.query.filter_by(foro_id=foro_id)
+        .order_by(Post.created_at.desc())
+        .limit(3)
+        .all()
+    )
 
     return jsonify([
-        post.serialize_post()
+        {
+            **post.serialize_post(),
+            "comments_count": len(post.comment),
+            "likes_count": len(post.likedPost)
+        }
         for post in posts
     ]), 200
 
 
+ 
 @api.route('/post/<int:post_id>', methods=['PUT'])
 @jwt_required()
 def edit_posts(post_id):
