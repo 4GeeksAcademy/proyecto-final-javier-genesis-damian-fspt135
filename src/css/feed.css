@@ -693,19 +693,19 @@
 }
 
 /* Imagen */
-
-.carousel-foro-image{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-    display:block;
-
+/* CAMBIO: object-fit pasa de "cover" a "contain" para que la imagen
+   se muestre COMPLETA dentro del carrusel, sin recortes.
+   Al usar "contain" pueden aparecer franjas del fondo oscuro
+   (.carousel-item / background:#111827) a los lados o arriba/abajo
+   si la imagen no coincide exactamente con la proporción del contenedor;
+   eso es esperado y mantiene la imagen intacta. */
+.carousel-foro-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
 }
-
 /* Si no existe imagen */
 
 .carousel-item.no-image{
@@ -762,7 +762,7 @@
 
 .carousel-caption::before{
 
-    content:"POST DESTACADO";
+    content:"FORO DESTACADO";
 
     display:inline-block;
 
