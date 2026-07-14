@@ -24,6 +24,8 @@ export const ForoPage = () => {
         followCount } = useFollowForo(foro);
     const [editingForo, setEditingForo] = useState(null);
     const user = JSON.parse(localStorage.getItem("user"));
+    const [searchPost, setSearchPost] = useState("");
+
 
     if (loading) {
         return (
@@ -40,6 +42,10 @@ export const ForoPage = () => {
             </div>
         );
     }
+
+    const filteredPosts = foro.posts?.filter((post) =>
+        post.title.toLowerCase().includes(searchPost.toLowerCase())
+    ) || [];
 
     return (
         <div className="container mt-4 pb-5" style={{ maxWidth: "800px" }}>
@@ -59,7 +65,7 @@ export const ForoPage = () => {
                 </div>
                 <div className="d-flex gap-2 w-100 w-md-auto justify-content-center justify-content-md-end mt-3 mt-md-0">
                     <button
-                        className="btn btn-secondary fw-medium px-3 shadow-sm d-flex align-items-center gap-1"
+                        className="btn btn-outline-secondary fw-medium px-3 shadow-sm d-flex align-items-center gap-1"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#infoForoCollapse"
@@ -111,27 +117,29 @@ export const ForoPage = () => {
                 <input
                     type="text"
                     className="form-control form-control-lg text-center border-2 shadow-sm rounded-pill"
-                    placeholder="BUSQUEDA"
+                    placeholder="Buscar posts..."
+                    value={searchPost}
+                    onChange={(e) => setSearchPost(e.target.value)}
                 />
             </div>
             <div className="p-4 border rounded-4 bg-white shadow-sm mb-4"
                 style={{ maxHeight: "800px", overflowY: "auto" }}>
-                {foro.posts && foro.posts.length > 0 ? (
-                    foro.posts.map((post) => (
+                {filteredPosts.length > 0 ? (
+                    filteredPosts.map((post) => (
                         <Link className="text-decoration-none text-dark"
                             to={`/foro/${foro_id}/post/${post.id}`}>
                             <PostCard key={post.id} post={post} />
                         </Link>
-                    ))) : (<span className="text-muted xtra-small">Se el primero en comentar</span>)}
+                    ))) : (<span className="text-muted xtra-small">No se encontraron posts.</span>)}
             </div>
             <div className="d-flex justify-content-between align-items-center mt-4">
-                <Link className="btn btn-dark px-4 py-2 fw-medium shadow-sm rounded-3"
+                <Link className="btn btn-outline-secondary px-4 py-2 fw-medium shadow-sm rounded-3"
                     to="/feed">
-                    Back home
+                    Back 
                 </Link>
                 <Link
                     to={`/foro/${foro_id}/create-post`}
-                    className="btn btn-success px-4 py-2 fw-bold shadow-sm rounded-3">
+                    className="btn btn-outline-primary px-4 py-2 fw-bold shadow-sm rounded-3">
                     Publicar
                 </Link>
             </div>
