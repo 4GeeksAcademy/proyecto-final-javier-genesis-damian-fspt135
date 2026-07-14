@@ -41,6 +41,7 @@ export const CreateForo = () => {
     e.preventDefault()
     try {
       const res = await handleCreateForo();
+      const resTag = await handleSaveForo(res.forum.id);
       if (res && res.forum && res.forum.id) {
         const newForoId = res.forum.id;
         navigate(`/foro/${newForoId}`)
@@ -158,20 +159,20 @@ export const CreateForo = () => {
           </div>
         </div>
 
-        <div className="row justify-content-between align-items-center g-3">
+        <div className="row justify-content-between align-items-center g-3 mt-3">
           <div className="col-auto">
             <Link
               to="/feed"
-              className="btn btn-outline-secondary btn-lg rounded-pill shadow-sm px-4 fw-bold fs-6"
+              className="btn btn-outline-secondary px-4 fw-bold"
             >
-              <i className="bi bi-arrow-left me-2"></i>Back Home
+              Back 
             </Link>
           </div>
 
           <div className="col-auto">
             <button
               type="submit"
-              className="btn btn-primary btn-lg rounded-pill shadow-sm px-5 fw-bold fs-6"
+              className="btn btn-outline-primary shadow-sm px-5 fw-bold"
               disabled={loading}
             >
               {loading ? (

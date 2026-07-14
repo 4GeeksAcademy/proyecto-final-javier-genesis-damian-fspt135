@@ -367,12 +367,6 @@ export const Feed = () => {
                                         Entrar
                                     </button>
 
-                                    <button
-                                        className="btn-follow"
-                                        onClick={() => handleFollow(foro.id)}
-                                    >
-                                        Seguir
-                                    </button>
 
                                 </div>
 
@@ -420,13 +414,6 @@ export const Feed = () => {
                                             onClick={() => navigate(`/foro/${foro.id}`)}
                                         >
                                             Entrar
-                                        </button>
-
-                                        <button
-                                            className="btn-follow"
-                                            onClick={() => handleFollow(foro.id)}
-                                        >
-                                            Seguir
                                         </button>
 
                                     </div>
