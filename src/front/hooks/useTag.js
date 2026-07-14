@@ -23,12 +23,14 @@ export const useTag = () => {
   };
 
   const onSelectedTag = async (tag) => {
+    
     try {
       if (selectedTag.includes(tag.id)) {
         setSelectedTag(selectedTag.filter((id) => id !== tag.id));
       } else {
         setSelectedTag([...selectedTag, tag.id]);
       }
+      console.log(selectedTag,'seleccione tag')
     } catch (err) {
       setError(err.message || "Error seleccionar tags");
     }

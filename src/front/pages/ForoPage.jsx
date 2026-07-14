@@ -65,7 +65,7 @@ export const ForoPage = () => {
                 </div>
                 <div className="d-flex gap-2 w-100 w-md-auto justify-content-center justify-content-md-end mt-3 mt-md-0">
                     <button
-                        className="btn btn-secondary fw-medium px-3 shadow-sm d-flex align-items-center gap-1"
+                        className="btn btn-outline-secondary fw-medium px-3 shadow-sm d-flex align-items-center gap-1"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#infoForoCollapse"
@@ -133,13 +133,13 @@ export const ForoPage = () => {
                     ))) : (<span className="text-muted xtra-small">No se encontraron posts.</span>)}
             </div>
             <div className="d-flex justify-content-between align-items-center mt-4">
-                <Link className="btn btn-dark px-4 py-2 fw-medium shadow-sm rounded-3"
+                <Link className="btn btn-outline-secondary px-4 py-2 fw-medium shadow-sm rounded-3"
                     to="/feed">
-                    Back home
+                    Back 
                 </Link>
                 <Link
                     to={`/foro/${foro_id}/create-post`}
-                    className="btn btn-success px-4 py-2 fw-bold shadow-sm rounded-3">
+                    className="btn btn-outline-primary px-4 py-2 fw-bold shadow-sm rounded-3">
                     Publicar
                 </Link>
             </div>
