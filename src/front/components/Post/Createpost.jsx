@@ -104,7 +104,7 @@ export const CreatePost = ({ forumId }) => {
                             <div className="d-flex justify-content-center gap-3">
 
                                 <button
-                                    className="btn btn-outline-danger shadow-sm"
+                                    className="btn btn-outline-danger btn-cancelar"
                                     onClick={() => {
                                         
                                         setTitle("");
@@ -124,7 +124,7 @@ export const CreatePost = ({ forumId }) => {
                                     Cancelar
                                 </button>
                                 <button
-                                    className="btn btn-outline-primary shadow-sm"
+                                    className="btn btn-primary btn-publicar"
                                     onClick={submitPost}
                                 >
                                     Publicar

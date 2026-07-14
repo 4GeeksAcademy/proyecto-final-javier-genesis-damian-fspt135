@@ -7,8 +7,7 @@ import { BodyTag } from "../components/BodyTag";
 import { deleteTagFromUser } from "../../services/tagService";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import userImg from "../../front/assets/img/userImg.png";
-import { Link } from "react-router-dom";
-import logo from "../../front/assets/img/logomin.png";
+
 
 export const Profile = () => {
 
@@ -134,13 +133,9 @@ export const Profile = () => {
                                     className="follow-item"
                                 >
 
-                                    <Link
-                                        to={`/foro/${foro.id}`}
-                                        className="follow-content text-decoration-none"
-                                    >
-
+                                    <div className="follow-content">
                                         <img
-                                            src={foro.img || logo}
+                                            src={foro.img}
                                             alt={foro.title}
                                             className="follow-image"
                                         />
@@ -148,8 +143,7 @@ export const Profile = () => {
                                         <span className="follow-title">
                                             {foro.title}
                                         </span>
-
-                                    </Link>
+                                    </div>
 
                                     {editingSection === "follow" && (
                                         <button
@@ -188,13 +182,9 @@ export const Profile = () => {
                                         className="follow-item"
                                     >
 
-                                        <Link
-                                            to={`/foro/${foro.id}`}
-                                            className="follow-content text-decoration-none"
-                                        >
-
+                                        <div className="follow-content">
                                             <img
-                                                src={foro.img || logo}
+                                                src={foro.img}
                                                 alt={foro.title}
                                                 className="follow-image"
                                             />
@@ -202,8 +192,7 @@ export const Profile = () => {
                                             <span className="follow-title">
                                                 {foro.title}
                                             </span>
-
-                                        </Link>
+                                        </div>
 
                                     </div>
                                 ))
@@ -363,11 +352,8 @@ export const Profile = () => {
                     {
                         editingSection === "info" && (
                             <button
-                                className="btn btn-success mt-3"
-                                onClick={async () => {
-                                    await handleUpdateProfile();
-                                    setEditingSection(null);
-                                }}
+                                className="btn btn-primary mt-3"
+                                onClick={handleUpdateProfile}
                             >
                                 Guardar cambios
                             </button>
@@ -489,7 +475,6 @@ export const Profile = () => {
                                         ]);
 
                                         setSelectedTag([]);
-                                        setEditingSection(null);
 
                                     }}
                                 >

@@ -48,7 +48,6 @@ export const useProfileView = () => {
 
       const follows = await getMyFollow();
       setFollowForos(follows);
-      console.log("FOLLOWS:", JSON.stringify(follows, null, 2));
 
       const createdForos = await getForosFromUser(id);
 

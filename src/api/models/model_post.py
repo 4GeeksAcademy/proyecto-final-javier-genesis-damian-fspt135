@@ -21,7 +21,6 @@ class Post (db.Model):
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
     likedPost= relationship("LikePost")
 
-
     def serialize_post(self):
         return {
         "id": self.id,
@@ -32,9 +31,5 @@ class Post (db.Model):
         "foro_id": self.foro_id,
         "created_at": self.created_at.isoformat() if self.created_at else None,
         "updated_at": self.updated_at.isoformat() if self.updated_at else None,
-        "user": {"username": self.user.username,"img_user": self.user.img},
-        "likes_count": len(self.likedPost),
-        "comments_count": len(self.comment),
-        "comments": [comment.serialize_comment()for comment in self.comment[-3:]
-        ]
+        "user": {"username":self.user.username, "img_user": self.user.img}
     }

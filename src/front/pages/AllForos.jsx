@@ -41,7 +41,7 @@ export const AllForos = () => {
                                     <CardForoSimply key={foro.id} foro={foro} img={foro?.img} title={foro?.title} description={foro?.description} />
                                 </div>
                                 <div className="text-center mt-3">
-                                    <Link className="btn btn-outline-primary w-40 fw-bold shadow-sm py-2 m-2"
+                                    <Link className="btn btn-primary w-40 fw-bold shadow-sm py-2 m-2"
                                     to={`/foro/${foro.id}`}>
                                         Entrar
                                     </Link>

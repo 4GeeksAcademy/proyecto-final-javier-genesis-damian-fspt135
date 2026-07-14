@@ -78,7 +78,7 @@ export const Landing = () => {
                             <h2 className="login-title">
                                 Iniciar Sesión
                             </h2>
-                            <h4>Email</h4>
+
                             <input
                                 type="email"
                                 placeholder="Correo electrónico"
@@ -86,10 +86,8 @@ export const Landing = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
-                            
 
                             <div className="password-container mb-2">
-                                <h4>Contraseña</h4>
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     className="form-control"

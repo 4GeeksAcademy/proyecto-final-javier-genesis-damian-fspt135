@@ -131,14 +131,14 @@ export const PostView = () => {
                             <input
                                 ref={inputRef}
                                 type="text"
-                                className="form-control"
+                                className="form-control rounded-pill"
                                 placeholder="Escribe un comentario..."
                                 value={commentText}
                                 onChange={(e) => setCommentText(e.target.value)}
                                 onKeyDown={handleKeyDown}
                             />
                             <button
-                                className="btn btn-outline-primary px-4 fw-semibold shadow-sm"
+                                className="btn btn-danger rounded-pill px-4 fw-semibold"
                                 onClick={handleComment}
                                 disabled={!commentText.trim()}
                             >
