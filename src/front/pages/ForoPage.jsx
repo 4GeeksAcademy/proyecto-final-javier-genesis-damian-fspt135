@@ -24,6 +24,8 @@ export const ForoPage = () => {
         followCount } = useFollowForo(foro);
     const [editingForo, setEditingForo] = useState(null);
     const user = JSON.parse(localStorage.getItem("user"));
+    const [searchPost, setSearchPost] = useState("");
+
 
     if (loading) {
         return (
@@ -40,6 +42,10 @@ export const ForoPage = () => {
             </div>
         );
     }
+
+    const filteredPosts = foro.posts?.filter((post) =>
+        post.title.toLowerCase().includes(searchPost.toLowerCase())
+    ) || [];
 
     return (
         <div className="container mt-4 pb-5" style={{ maxWidth: "800px" }}>
@@ -111,18 +117,20 @@ export const ForoPage = () => {
                 <input
                     type="text"
                     className="form-control form-control-lg text-center border-2 shadow-sm rounded-pill"
-                    placeholder="BUSQUEDA"
+                    placeholder="Buscar posts..."
+                    value={searchPost}
+                    onChange={(e) => setSearchPost(e.target.value)}
                 />
             </div>
             <div className="p-4 border rounded-4 bg-white shadow-sm mb-4"
                 style={{ maxHeight: "800px", overflowY: "auto" }}>
-                {foro.posts && foro.posts.length > 0 ? (
-                    foro.posts.map((post) => (
+                {filteredPosts.length > 0 ? (
+                    filteredPosts.map((post) => (
                         <Link className="text-decoration-none text-dark"
                             to={`/foro/${foro_id}/post/${post.id}`}>
                             <PostCard key={post.id} post={post} />
                         </Link>
-                    ))) : (<span className="text-muted xtra-small">Se el primero en comentar</span>)}
+                    ))) : (<span className="text-muted xtra-small">No se encontraron posts.</span>)}
             </div>
             <div className="d-flex justify-content-between align-items-center mt-4">
                 <Link className="btn btn-outline-secondary px-4 py-2 fw-medium shadow-sm rounded-3"

@@ -29,14 +29,15 @@ export const Feed = () => {
             console.log(error);
         }
     };
-
     const {
         loading,
-        posts,
+        filteredForos,
         myForos,
         followForos,
+        selectedForo,
+        foroPosts,
+        changeForo,
         userTags,
-        filteredForos,
         loadFollowForos,
         allTags,
         activeTag,
@@ -51,6 +52,10 @@ export const Feed = () => {
 
         const handleSlide = (event) => {
             setActiveIndex(event.to);
+
+            if (filteredForos[event.to]) {
+                changeForo(filteredForos[event.to]);
+            }
         };
 
         carouselEl.addEventListener("slid.bs.carousel", handleSlide);
@@ -58,7 +63,7 @@ export const Feed = () => {
         return () => {
             carouselEl.removeEventListener("slid.bs.carousel", handleSlide);
         };
-    }, [posts]);
+    }, [filteredForos]);
 
     if (loading) {
         return (
@@ -229,194 +234,38 @@ export const Feed = () => {
                 >
                     <div className="carousel-inner">
 
-                        {[...posts]
-                            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                            .slice(0, 3)
-                            .map((post, index) => ((
-
-
-                                <div
-                                    key={post.id}
-                                    className={`carousel-item ${index === 0 ? "active" : ""}`}
-                                    onClick={() => navigate(`/foro/${post.foro_id}`)}
-                                    style={{ cursor: "pointer" }}
-                                >
-
-                                    {post.img ? (
-
-                                        <img
-                                            src={post.img}
-                                            alt={post.title}
-                                            className="carousel-foro-image"
-                                        />
-
-                                    ) : (
-
-                                        <div className="no-image d-flex justify-content-center align-items-center h-100">
-
-                                            <h2 className="text-white fw-bold">
-                                                {post.title}
-                                            </h2>
-
-                                        </div>
-
-                                    )}
-
-
-                                    <div className="carousel-caption">
-
-                                        <h3>{post.title}</h3>
-
-                                        <p>{post.content}</p>
-
-                                        <div className="carousel-footer">
-
-                                            <div className="carousel-user">
-
-                                                <FaUserCircle size={22} />
-
-                                                <span>
-                                                    {post.user?.username || "Usuario"}
-                                                </span>
-
-                                            </div>
-
-                                            <div className="carousel-stats">
-
-                                                <span>
-                                                    💬 {post.comments_count ?? 0}
-                                                </span>
-
-                                                <span>
-                                                    ❤️ {post.likes_count ?? 0}
-                                                </span>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            )))}
-
-                </div>
-
-                <button
-                    className="carousel-control-prev"
-                    type="button"
-                    data-bs-target="#foroCarousel"
-                    data-bs-slide="prev"
-                >
-                    <span className="carousel-control-prev-icon"></span>
-                </button>
-
-                <button
-                    className="carousel-control-next"
-                    type="button"
-                    data-bs-target="#foroCarousel"
-                    data-bs-slide="next"
-                >
-                    <span className="carousel-control-next-icon"></span>
-                </button>
-
-        </div>
-
-                {
-        filteredForos.length > 0 ? (
-
-            <>
-
-                <div className="feed-section-header">
-
-                    <h3> Foros sugeridos</h3>
-
-                </div>
-
-                <div className="foro-scroll sugeridos-scroll">
-
-                    {filteredForos.map((foro) => (
-
-                        <div
-                            key={foro.id}
-                            className="feed-foro-card-small"
-                        >
-
-                            <Link to={`/foro/${foro.id}`}>
-
-                                <img
-                                    src={foro.img}
-                                    alt={foro.title}
-                                    className="foro-card-small-image"
-                                />
-
-                            </Link>
-                            <div className="p-3">
-
-                                <h5>{foro.title}</h5>
-
-                                <p>{foro.description}</p>
-
-                                <div className="foro-card-buttons">
-
-                                    <button
-                                        className="btn-enter"
-                                        onClick={() => navigate(`/foro/${foro.id}`)}
-                                    >
-                                        Entrar
-                                    </button>
-
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    ))}
-
-                </div>
-
-                <div className="feed-section-header">
-
-                    <h3> Foros recientes</h3>
-
-                </div>
-
-                <div className="foro-scroll recientes-scroll">
-
-                    {[...filteredForos]
-                        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                        .map((foro) => (
+                        {filteredForos.map((foro, index) => (
 
                             <div
-                                key={`recent-${foro.id}`}
-                                className="feed-foro-card-small"
+                                key={foro.id}
+                                className={`carousel-item ${index === 0 ? "active" : ""}`}
                             >
 
-                                <img
-                                    src={foro.img}
-                                    alt={foro.title}
-                                    className="foro-card-small-image"
-                                />
+                                {foro.img ? (
 
-                                <div className="p-3">
+                                    <img
+                                        src={foro.img}
+                                        alt={foro.title}
+                                        className="carousel-foro-image"
+                                    />
 
-                                    <h5>{foro.title}</h5>
+                                ) : (
 
-                                    <p>{foro.description}</p>
+                                    <div className="no-image d-flex justify-content-center align-items-center h-100">
 
-                                    <div className="foro-card-buttons">
-
-                                        <button
-                                            className="btn-enter"
-                                            onClick={() => navigate(`/foro/${foro.id}`)}
-                                        >
-                                            Entrar
-                                        </button>
+                                        <h2 className="text-white fw-bold">
+                                            {foro.title}
+                                        </h2>
 
                                     </div>
+
+                                )}
+
+                                <div className="carousel-caption">
+
+                                    <h2>{foro.title}</h2>
+
+                                    <p>{foro.description}</p>
 
                                 </div>
 
@@ -424,28 +273,224 @@ export const Feed = () => {
 
                         ))}
 
+                    </div>
+
+                    <button
+                        className="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#foroCarousel"
+                        data-bs-slide="prev"
+                    >
+                        <span className="carousel-control-prev-icon"></span>
+                    </button>
+
+                    <button
+                        className="carousel-control-next"
+                        type="button"
+                        data-bs-target="#foroCarousel"
+                        data-bs-slide="next"
+                    >
+                        <span className="carousel-control-next-icon"></span>
+                    </button>
+
                 </div>
 
+                {/*  ÚLTIMOS POSTS DEL FORO */}
 
-            </>
+                {selectedForo && (
+                    <>
+                        <div className="feed-section-header">
+                            <h3>
+                                Publicaciones de {selectedForo.title}
+                            </h3>
+                        </div>
 
-        ) : (
+                        <div className="row g-4 mb-5">
 
-            <div className="empty-search-card">
+                            {foroPosts.map((post) => (
+
+                                <div
+                                    key={post.id}
+                                    className="col-lg-4 col-md-6"
+                                >
+
+                                    <div
+                                        className="card h-100 shadow-sm"
+                                        style={{
+                                            borderRadius: "20px",
+                                            cursor: "pointer"
+                                        }}
+                                        onClick={() => navigate(`/foro/${post.foro_id}/post/${post.id}`)}
+                                    >
+
+                                        {post.img && (
+                                            <img
+                                                src={post.img}
+                                                alt={post.title}
+                                                className="card-img-top"
+                                                style={{
+                                                    height: "220px",
+                                                    objectFit: "cover"
+                                                }}
+                                            />
+                                        )}
+
+                                        <div className="card-body">
+
+                                            <h5>{post.title}</h5>
+
+                                            <p className="text-muted">
+                                                {post.content?.substring(0, 100)}...
+                                            </p>
+
+                                        </div>
+
+                                        <div className="card-footer d-flex justify-content-between">
+
+                                            <span>
+                                                ❤️ {post.likes_count ?? 0}
+                                            </span>
+
+                                            <span>
+                                                💬 {post.comments_count ?? 0}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            ))}
+
+                        </div>
+
+                    </>
+                )}
 
 
-                <h3>
-                    🔍 No encontramos resultados
-                </h3>
+                {
+                    filteredForos.length > 0 ? (
 
-                <p>
-                    No existe ningún foro que coincida con tu búsqueda.
-                </p>
+                        <>
 
-            </div>
+                            <div className="feed-section-header">
 
-        )
-    }
+                                <h3> Foros sugeridos</h3>
+
+                            </div>
+
+                            <div className="foro-scroll sugeridos-scroll">
+
+                                {filteredForos.map((foro) => (
+
+                                    <div
+                                        key={foro.id}
+                                        className="feed-foro-card-small"
+                                    >
+
+                                        <Link to={`/foro/${foro.id}`}>
+
+                                            <img
+                                                src={foro.img}
+                                                alt={foro.title}
+                                                className="foro-card-small-image"
+                                            />
+
+                                        </Link>
+                                        <div className="p-3">
+
+                                            <h5>{foro.title}</h5>
+
+                                            <p>{foro.description}</p>
+
+                                            <div className="foro-card-buttons">
+
+                                                <button
+                                                    className="btn-enter"
+                                                    onClick={() => navigate(`/foro/${foro.id}`)}
+                                                >
+                                                    Entrar
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                ))}
+
+                            </div>
+
+                            <div className="feed-section-header">
+
+                                <h3> Foros recientes</h3>
+
+                            </div>
+
+                            <div className="foro-scroll recientes-scroll">
+
+                                {[...filteredForos]
+                                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                                    .map((foro) => (
+
+                                        <div
+                                            key={`recent-${foro.id}`}
+                                            className="feed-foro-card-small"
+                                        >
+
+                                            <img
+                                                src={foro.img}
+                                                alt={foro.title}
+                                                className="foro-card-small-image"
+                                            />
+
+                                            <div className="p-3">
+
+                                                <h5>{foro.title}</h5>
+
+                                                <p>{foro.description}</p>
+
+                                                <div className="foro-card-buttons">
+
+                                                    <button
+                                                        className="btn-enter"
+                                                        onClick={() => navigate(`/foro/${foro.id}`)}
+                                                    >
+                                                        Entrar
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    ))}
+
+                            </div>
+
+
+                        </>
+
+                    ) : (
+
+                        <div className="empty-search-card">
+
+
+                            <h3>
+                                🔍 No encontramos resultados
+                            </h3>
+
+                            <p>
+                                No existe ningún foro que coincida con tu búsqueda.
+                            </p>
+
+                        </div>
+
+                    )
+                }
 
             </main >
 
