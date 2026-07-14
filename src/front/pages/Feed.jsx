@@ -5,6 +5,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { followForo } from "../../services/followService";
 import userImg from "../../front/assets/img/userImg.png";
+import logo from "../../front/assets/img/logomin.png";
 
 
 export const Feed = () => {
@@ -119,7 +120,7 @@ export const Feed = () => {
 
                                         >
                                             <img
-                                                src={foro.img}
+                                                src={foro.img || logo}
                                                 alt={foro.title}
                                                 className="forum-image"
                                             />
@@ -162,7 +163,7 @@ export const Feed = () => {
                                     >
 
                                         <img
-                                            src={foro.img}
+                                            src={foro.img || logo}
                                             alt={foro.title}
                                             className="forum-image"
                                         />
@@ -241,26 +242,13 @@ export const Feed = () => {
                                 className={`carousel-item ${index === 0 ? "active" : ""}`}
                             >
 
-                                {foro.img ? (
-
                                     <img
-                                        src={foro.img}
+                                        src={foro.img || logo}
                                         alt={foro.title}
                                         className="carousel-foro-image"
                                     />
 
-                                ) : (
-
-                                    <div className="no-image d-flex justify-content-center align-items-center h-100">
-
-                                        <h2 className="text-white fw-bold">
-                                            {foro.title}
-                                        </h2>
-
-                                    </div>
-
-                                )}
-
+        
                                 <div className="carousel-caption">
 
                                     <h2>{foro.title}</h2>
@@ -392,7 +380,7 @@ export const Feed = () => {
                                         <Link to={`/foro/${foro.id}`}>
 
                                             <img
-                                                src={foro.img}
+                                                src={foro.img || logo}
                                                 alt={foro.title}
                                                 className="foro-card-small-image"
                                             />
@@ -441,7 +429,7 @@ export const Feed = () => {
                                         >
 
                                             <img
-                                                src={foro.img}
+                                                src={foro.img || logo}
                                                 alt={foro.title}
                                                 className="foro-card-small-image"
                                             />

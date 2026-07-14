@@ -8,7 +8,7 @@ import { deleteTagFromUser } from "../../services/tagService";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import userImg from "../../front/assets/img/userImg.png";
 import { Link } from "react-router-dom";
-
+import logo from "../../front/assets/img/logomin.png";
 
 export const Profile = () => {
 
@@ -140,7 +140,7 @@ export const Profile = () => {
                                     >
 
                                         <img
-                                            src={foro.img}
+                                            src={foro.img || logo}
                                             alt={foro.title}
                                             className="follow-image"
                                         />
@@ -194,7 +194,7 @@ export const Profile = () => {
                                         >
 
                                             <img
-                                                src={foro.img}
+                                                src={foro.img || logo}
                                                 alt={foro.title}
                                                 className="follow-image"
                                             />
